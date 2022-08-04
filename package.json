@@ -1,0 +1,29 @@
+{
+  "name": "typescript-github-action-template",
+  "version": "0.1.0",
+  "description": "A template to create custom GitHub Action with TypeScript/JavaScript.",
+  "main": "lib/index.js",
+  "types": "lib/index.d.js",
+  "type": "module",
+  "scripts": {
+    "build": "yarn tsc",
+    "package": "yarn ncc build src/index.ts --external eslint --source-map --license licenses.txt",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "preversion": "rm -rf lib && rm -rf dist && yarn && yarn build && yarn package"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CatChen/typescript-github-action-template.git"
+  },
+  "author": "Cat Chen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CatChen/typescript-github-action-template/issues"
+  },
+  "homepage": "https://github.com/CatChen/typescript-github-action-template#readme",
+  "devDependencies": {
+    "@types/node": "^18.6.3",
+    "@vercel/ncc": "^0.34.0",
+    "typescript": "^4.7.4"
+  }
+}
