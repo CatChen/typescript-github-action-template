@@ -10,3 +10,6 @@ runs:
   main: "dist/index.js"
   post: "dist/index.js"
   post-if: always()
+branding:
+  icon: "box"
+  color: "yellow"
