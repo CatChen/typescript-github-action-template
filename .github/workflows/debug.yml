@@ -1,0 +1,52 @@
+name: Debug
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main, "[0-9]+-[0-9]+-*"]
+  workflow_run:
+    workflows: ["Debug for Dependabot"]
+    types:
+      - completed
+  workflow_dispatch:
+
+jobs:
+  debug_information:
+    name: Debug Information
+    if: ${{ github.actor != 'dependabot[bot]' || github.event_name == 'workflow_run' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print contexts
+        env:
+          GITHUB: ${{ toJSON(github) }}
+          JOB: ${{ toJSON(job) }}
+          INPUTS: ${{ toJSON(inputs) }}
+        run: |
+          echo "::debug::github =
+          $GITHUB"
+          echo "::debug::job =
+          $JOB"
+          echo "::debug::inputs =
+          $INPUTS"
+
+      - name: Create JSON files
+        id: create-json-files
+        env:
+          GITHUB: ${{ toJSON(github) }}
+          JOB: ${{ toJSON(job) }}
+          INPUTS: ${{ toJSON(inputs) }}
+        run: |
+          TEMP_JSON_DIRECTORY="$(mktemp -d)"
+          echo "$GITHUB" > "$TEMP_JSON_DIRECTORY/github.json"
+          echo "$JOB" > "$TEMP_JSON_DIRECTORY/job.json"
+          echo "$INPUTS" > "$TEMP_JSON_DIRECTORY/inputs.json"
+          echo "::set-output name=temp-json-directory::$TEMP_JSON_DIRECTORY"
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: debug
+          path: ${{ steps.create-json-files.outputs.temp-json-directory }}
+          retention-days: 30
