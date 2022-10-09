@@ -32,6 +32,19 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_branch }}
 
+      - name: Start check run
+        id: start-check-run
+        if: ${{ github.event_name == 'workflow_run' }}
+        run: |
+          RUN_ID=$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            "/repos/$GITHUB_ACTION_REPOSITORY/check-runs" \
+            -f name="Build" \
+            -f head="$GITHUB_SHA" \
+            -f status="in_progress" \
+            -q .id)
+          echo "::set-output name=run-id::$RUN_ID"
+
       - uses: actions/setup-node@v3
         with:
           node-version-file: ".nvmrc"
@@ -52,3 +65,15 @@ jobs:
           fail-if-not-clean: ${{ github.actor != 'dependabot[bot]' }}
           push-if-not-clean: true
           github-token: ${{ secrets.CHECK_GIT_STATUS_ACTION_TOKEN }}
+
+      - name: End check run
+        if: ${{ always() && steps.check-git-status.outputs.run-id != '' }}
+        env:
+          RUN_ID: ${{ steps.check-git-status.outputs.run-id }}
+          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+        run: |
+          gh api \
+            -H "Accept: application/vnd.github+json" \
+            "/repos/$GITHUB_ACTION_REPOSITORY/check-runs/$RUN_ID" \
+            -f status="completed" \
+            -f conclusion="$CONCLUSION"
