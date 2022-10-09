@@ -24,6 +24,33 @@ jobs:
     permissions: write-all
 
     steps:
+      - name: Start check run
+        id: start-check-run
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.event.workflow_run.head_sha }}
+        run: |
+          echo "::notice::Repo/owner is $GITHUB_REPOSITORY"
+          echo "::notice::SHA is $HEAD_SHA"
+          echo "::notice::Run id is $GITHUB_RUN_ID"
+          CHECK_SUITE_ID=$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            /repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID \
+            -q .check_suite_id)
+          echo "::notice::Check suite id is $CHECK_SUITE_ID"
+          EXTERNAL_ID=$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            /repos/$GITHUB_REPOSITORY/check-suites/$CHECK_SUITE_ID/check-runs \
+            -q .check_runs[0].external_id)
+          echo "::notice::External id is $EXTERNAL_ID"
+          CHECK_RUN_ID=$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            "/repos/$GITHUB_REPOSITORY/check-runs" \
+            -q .id \
+            --input - <<< '{ "name": "Build / Build for Dependabot", "head_sha": "'"$HEAD_SHA"'", "external_id": "'"$EXTERNAL_ID"'", "status": "in_progress" }')
+          echo "::notice::Check run ID is $CHECK_RUN_ID"
+          echo "::set-output name=check-run-id::$CHECK_RUN_ID"
+
       - uses: actions/checkout@v3
         if: ${{ github.event_name != 'workflow_run' }}
 
@@ -31,19 +58,6 @@ jobs:
         if: ${{ github.event_name == 'workflow_run' }}
         with:
           ref: ${{ github.event.workflow_run.head_branch }}
-
-      - name: Start check run
-        id: start-check-run
-        if: ${{ github.event_name == 'workflow_run' }}
-        run: |
-          RUN_ID=$(gh api \
-            -H "Accept: application/vnd.github+json" \
-            "/repos/$GITHUB_ACTION_REPOSITORY/check-runs" \
-            -f name="Build" \
-            -f head="$GITHUB_SHA" \
-            -f status="in_progress" \
-            -q .id)
-          echo "::set-output name=run-id::$RUN_ID"
 
       - uses: actions/setup-node@v3
         with:
@@ -67,13 +81,15 @@ jobs:
           github-token: ${{ secrets.CHECK_GIT_STATUS_ACTION_TOKEN }}
 
       - name: End check run
-        if: ${{ always() && steps.check-git-status.outputs.run-id != '' }}
+        if: ${{ always() && steps.start-check-run.outputs.run-id != '' }}
         env:
-          RUN_ID: ${{ steps.check-git-status.outputs.run-id }}
-          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          GH_TOKEN: ${{ github.token }}
+          CHECK_RUN_ID: ${{ steps.start-check-run.outputs.check-run-id }}
+          CONCLUSION: ${{ steps.check-git-status.conclusion }}
         run: |
           gh api \
             -H "Accept: application/vnd.github+json" \
-            "/repos/$GITHUB_ACTION_REPOSITORY/check-runs/$RUN_ID" \
+            -X "PATCH" \
+            "/repos/$GITHUB_REPOSITORY/check-runs/$CHECK_RUN_ID" \
             -f status="completed" \
             -f conclusion="$CONCLUSION"
