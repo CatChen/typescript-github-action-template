@@ -47,7 +47,8 @@ jobs:
         run: yarn package
 
       - uses: CatChen/check-git-status-action@v1
+        id: check-git-status
         with:
-          fail-if-not-clean: true
+          fail-if-not-clean: ${{ github.actor != 'dependabot[bot]' }}
           push-if-not-clean: true
           github-token: ${{ secrets.CHECK_GIT_STATUS_ACTION_TOKEN }}
