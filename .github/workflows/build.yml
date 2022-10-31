@@ -10,6 +10,7 @@ on:
     types:
       - completed
   workflow_dispatch:
+  workflow_call:
 
 jobs:
   build:
@@ -18,11 +19,12 @@ jobs:
       ${{
         (github.event_name == 'push' && github.actor != 'dependabot[bot]') ||
         (github.event_name == 'pull_request' && github.actor != 'dependabot[bot]') ||
-        (github.event_name == 'workflow_run' && github.actor == 'dependabot[bot]')
+        (github.event_name == 'workflow_run' && github.actor == 'dependabot[bot]') ||
+        github.event_name == 'workflow_call' ||
+        github.event_name == 'workflow_dispatch'
       }}
     runs-on: ubuntu-latest
     permissions: write-all
-
     steps:
       - uses: actions/checkout@v3
         if: ${{ github.event_name != 'workflow_run' }}
@@ -46,9 +48,9 @@ jobs:
       - name: Package
         run: yarn package
 
-      - uses: CatChen/check-git-status-action@v1
+      - uses: CatChen/check-git-status-action@v1.0.8
         id: check-git-status
         with:
-          fail-if-not-clean: ${{ github.actor != 'dependabot[bot]' }}
+          fail-if-not-clean: ${{ github.actor != 'dependabot[bot]' || github.event_name == 'workflow_call' }}
           push-if-not-clean: true
           github-token: ${{ secrets.CHECK_GIT_STATUS_ACTION_TOKEN }}
