@@ -72,7 +72,7 @@ jobs:
 
           if test $(git diff --name-only $BASE_TAG | wc -l) != 0
           then
-            git diff --name-only $BASE_TAG | xargs -n1 -I {} echo "::notice file={}::  File: {}"
+            git diff --name-only $BASE_TAG | xargs -n1 -I {} echo "  File: {}"
 
             npm version patch
             HEAD_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
