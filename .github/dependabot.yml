@@ -4,6 +4,8 @@ updates:
     directory: "/"
     schedule:
       interval: daily
+    reviewers:
+      - catchen
     assignees:
       - catchen
     labels:
@@ -13,6 +15,8 @@ updates:
     directory: "/"
     schedule:
       interval: daily
+    reviewers:
+      - catchen
     assignees:
       - catchen
     labels:
