@@ -15,10 +15,29 @@ on:
 jobs:
   test:
     name: Test
+    if: |-
+      ${{
+        (
+          github.actor == 'dependabot[bot]' && 
+          github.event_name != 'push' &&
+          github.event_name != 'pull_request'
+        ) || (
+          github.actor != 'dependabot[bot]' &&
+          github.event_name != 'workflow_run'
+        )
+      }}
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
+        if: ${{ github.event_name != 'workflow_run' }}
+        with:
+          fetch-depth: 0
+
+      - uses: actions/checkout@v3
+        if: ${{ github.event_name == 'workflow_run' }}
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+          fetch-depth: 0
 
       - name: Test
         uses: ./
