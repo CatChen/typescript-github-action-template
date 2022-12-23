@@ -9472,6 +9472,9 @@ const github_1 = __nccwpck_require__(5438);
 const core_1 = __nccwpck_require__(2186);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
+        if (!(0, core_1.getState)("isPost")) {
+            (0, core_1.saveState)("isPost", "true");
+        }
         (0, core_1.info)(`This is the Action context: ${JSON.stringify(github_1.context)}`);
         (0, core_1.error)("Action needs to be implemented.");
     });
