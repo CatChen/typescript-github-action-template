@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/CatChen/typescript-github-action-template#readme",
   "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^4.0.0",
+    "@serverless-guru/prettier-plugin-import-order": "^0.2.0",
     "@types/node": "^18.11.9",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@typescript-eslint/parser": "^5.43.0",
