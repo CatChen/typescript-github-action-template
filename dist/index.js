@@ -9468,23 +9468,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const github_1 = __nccwpck_require__(5438);
 const core_1 = __nccwpck_require__(2186);
+const github_1 = __nccwpck_require__(5438);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        if (!(0, core_1.getState)("isPost")) {
-            (0, core_1.saveState)("isPost", "true");
+        if (!(0, core_1.getState)('isPost')) {
+            (0, core_1.saveState)('isPost', 'true');
         }
         (0, core_1.info)(`This is the Action context: ${JSON.stringify(github_1.context)}`);
-        (0, core_1.error)("Action needs to be implemented.");
+        (0, core_1.error)('Action needs to be implemented.');
     });
 }
 function cleanup() {
     return __awaiter(this, void 0, void 0, function* () {
-        (0, core_1.error)("Post action needs to be implemented or removed.");
+        (0, core_1.error)('Post action needs to be implemented or removed.');
     });
 }
-if (!process.env["STATE_isPost"]) {
+if (!process.env['STATE_isPost']) {
     run();
 }
 else {
