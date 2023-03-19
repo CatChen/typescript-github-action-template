@@ -42,17 +42,22 @@ on:
 jobs:
   build:
     uses: ./.github/workflows/build.yml
-    secrets: inherit
+    permissions:
+      pull-requests: write
+      contents: write
 
   test:
     uses: ./.github/workflows/test.yml
-    secrets: inherit
 
   eslint:
     uses: ./.github/workflows/eslint.yml
 
   codeql:
     uses: ./.github/workflows/codeql.yml
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
 
   release:
     name: Release
