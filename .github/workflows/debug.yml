@@ -31,15 +31,11 @@ on:
     type: [created, rerequested, completed, requested_action]
   check_suite:
     type: [completed]
-  workflow_run:
-    workflows: ['Debug for Dependabot']
-    types: [completed, requested]
   workflow_dispatch:
 
 jobs:
   debug_information:
     name: Debug Information
-    if: ${{ github.actor != 'dependabot[bot]' || github.event_name == 'workflow_run' }}
     runs-on: ubuntu-latest
 
     steps:
