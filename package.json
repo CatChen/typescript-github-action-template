@@ -44,7 +44,7 @@
     "@actions/github": "^5.1.1"
   },
   "lint-staged": {
-    "*.ts": "yarn lint --fix",
+    "*.(ts,js)": "yarn lint --fix",
     "*.json": "yarn prettier -w",
     "*.(yml,yaml)": "yarn prettier -w",
     "*.(md,markdown)": "yarn prettier -w"
