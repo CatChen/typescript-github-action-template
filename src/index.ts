@@ -1,7 +1,7 @@
 import { error, getState, info, saveState } from '@actions/core';
 import { context } from '@actions/github';
 
-async function run(): Promise<void> {
+function run(): void {
   if (!getState('isPost')) {
     saveState('isPost', 'true');
   }
@@ -9,11 +9,11 @@ async function run(): Promise<void> {
   error('Action needs to be implemented.');
 }
 
-async function cleanup(): Promise<void> {
+function cleanup(): void {
   error('Post action needs to be implemented or removed.');
 }
 
-if (!process.env['STATE_isPost']) {
+if (!getState('isPost')) {
   run();
 } else {
   cleanup();

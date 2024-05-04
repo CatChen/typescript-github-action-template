@@ -30108,46 +30108,6 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
-/***/ 6144:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core_1 = __nccwpck_require__(2186);
-const github_1 = __nccwpck_require__(5438);
-function run() {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (!(0, core_1.getState)('isPost')) {
-            (0, core_1.saveState)('isPost', 'true');
-        }
-        (0, core_1.info)(`This is the Action context: ${JSON.stringify(github_1.context)}`);
-        (0, core_1.error)('Action needs to be implemented.');
-    });
-}
-function cleanup() {
-    return __awaiter(this, void 0, void 0, function* () {
-        (0, core_1.error)('Post action needs to be implemented or removed.');
-    });
-}
-if (!process.env['STATE_isPost']) {
-    run();
-}
-else {
-    cleanup();
-}
-
-
-/***/ }),
-
 /***/ 9491:
 /***/ ((module) => {
 
@@ -30382,11 +30342,34 @@ module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("zlib");
 /******/ if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = new URL('.', import.meta.url).pathname.slice(import.meta.url.match(/^file:\/\/\/\w:/) ? 1 : 0, -1) + "/";
 /******/ 
 /************************************************************************/
-/******/ 
-/******/ // startup
-/******/ // Load entry module and return exports
-/******/ // This entry module is referenced by other modules so it can't be inlined
-/******/ var __webpack_exports__ = __nccwpck_require__(6144);
-/******/ 
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+var exports = __webpack_exports__;
+
+Object.defineProperty(exports, "X", ({ value: true }));
+const core_1 = __nccwpck_require__(2186);
+const github_1 = __nccwpck_require__(5438);
+function run() {
+    if (!(0, core_1.getState)('isPost')) {
+        (0, core_1.saveState)('isPost', 'true');
+    }
+    (0, core_1.info)(`This is the Action context: ${JSON.stringify(github_1.context)}`);
+    (0, core_1.error)('Action needs to be implemented.');
+}
+function cleanup() {
+    (0, core_1.error)('Post action needs to be implemented or removed.');
+}
+if (!(0, core_1.getState)('isPost')) {
+    run();
+}
+else {
+    cleanup();
+}
+
+})();
+
+var __webpack_exports___esModule = __webpack_exports__.X;
+export { __webpack_exports___esModule as __esModule };
 
 //# sourceMappingURL=index.js.map
