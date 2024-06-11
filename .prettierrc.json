@@ -7,7 +7,6 @@
   "tabWidth": 2,
   "trailingComma": "all",
   "importOrder": [
-    "^node:(.*)$",
     "^@action/core/(.*)$",
     "^@action/github/(.*)$",
     "^@action/exec/(.*)$",
@@ -16,6 +15,9 @@
     "<THIRD_PARTY_MODULES>",
     "^[./]"
   ],
-  "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true
+  "importOrderSortIndividualImports": true,
+  "importOrderMergeDuplicateImports": true,
+  "importOrderBuiltinModulesToTop": true,
+  "importOrderTypeImportsToTop": true,
+  "plugins": ["@serverless-guru/prettier-plugin-import-order"]
 }
