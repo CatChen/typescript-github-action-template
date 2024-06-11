@@ -42,5 +42,3 @@ jobs:
           fail-if-not-clean: ${{ github.actor != 'dependabot[bot]' || github.actor_id != 49699333 }}
           push-if-not-clean: true
           request-changes-if-not-clean: false
-          push-token: ${{ secrets.CHECK_GIT_STATUS_ACTION_TOKEN }}
-          request-changes-token: ${{ secrets.GITHUB_TOKEN }}
