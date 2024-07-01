@@ -30918,6 +30918,35 @@ module.exports = parseParams
 /******/ }
 /******/ 
 /************************************************************************/
+/******/ /* webpack/runtime/compat get default export */
+/******/ (() => {
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__nccwpck_require__.n = (module) => {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			() => (module['default']) :
+/******/ 			() => (module);
+/******/ 		__nccwpck_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
+/******/ })();
+/******/ 
+/******/ /* webpack/runtime/define property getters */
+/******/ (() => {
+/******/ 	// define getter functions for harmony exports
+/******/ 	__nccwpck_require__.d = (exports, definition) => {
+/******/ 		for(var key in definition) {
+/******/ 			if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 			}
+/******/ 		}
+/******/ 	};
+/******/ })();
+/******/ 
+/******/ /* webpack/runtime/hasOwnProperty shorthand */
+/******/ (() => {
+/******/ 	__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ })();
+/******/ 
 /******/ /* webpack/runtime/compat */
 /******/ 
 /******/ if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = new URL('.', import.meta.url).pathname.slice(import.meta.url.match(/^file:\/\/\/\w:/) ? 1 : 0, -1) + "/";
@@ -30926,22 +30955,23 @@ module.exports = parseParams
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-var exports = __webpack_exports__;
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(2186);
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(5438);
+/* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_1__);
 
-Object.defineProperty(exports, "X", ({ value: true }));
-const core_1 = __nccwpck_require__(2186);
-const github_1 = __nccwpck_require__(5438);
+
 function run() {
-    if (!(0, core_1.getState)('isPost')) {
-        (0, core_1.saveState)('isPost', 'true');
+    if (!(0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getState)('isPost')) {
+        (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.saveState)('isPost', 'true');
     }
-    (0, core_1.info)(`This is the Action context: ${JSON.stringify(github_1.context)}`);
-    (0, core_1.error)('Action needs to be implemented.');
+    (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.info)(`This is the Action context: ${JSON.stringify(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context)}`);
+    (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.error)('Action needs to be implemented.');
 }
 function cleanup() {
-    (0, core_1.error)('Post action needs to be implemented or removed.');
+    (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.error)('Post action needs to be implemented or removed.');
 }
-if (!(0, core_1.getState)('isPost')) {
+if (!(0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getState)('isPost')) {
     run();
 }
 else {
@@ -30950,7 +30980,5 @@ else {
 
 })();
 
-var __webpack_exports___esModule = __webpack_exports__.X;
-export { __webpack_exports___esModule as __esModule };
 
 //# sourceMappingURL=index.js.map
