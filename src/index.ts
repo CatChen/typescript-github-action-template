@@ -1,20 +1,49 @@
-import { error, getState, info, saveState } from '@actions/core';
-import { context } from '@actions/github';
+import {
+  error,
+  getInput,
+  getState,
+  notice,
+  saveState,
+  setFailed,
+} from '@actions/core';
+import { getOctokit } from './getOctokit.js';
 
-function run(): void {
-  if (!getState('isPost')) {
-    saveState('isPost', 'true');
-  }
-  info(`This is the Action context: ${JSON.stringify(context)}`);
-  error('Action needs to be implemented.');
+export async function getLogin(githubToken: string): Promise<string> {
+  const octokit = getOctokit(githubToken);
+  const {
+    viewer: { login },
+  } = await octokit.graphql<{ viewer: { login: string } }>(
+    `
+      query {
+        viewer {
+          login
+        }
+      }
+    `,
+    {},
+  );
+  return login;
+}
+
+async function run(): Promise<void> {
+  const githubToken = getInput('github-token');
+  const login = await getLogin(githubToken);
+  saveState('login', login);
+
+  notice(`Hello, ${login}!`);
+  error('Please implement this Action.');
 }
 
 function cleanup(): void {
-  error('Post action needs to be implemented or removed.');
+  const login = getState('login');
+
+  notice(`Goodbye, ${login}!`);
+  error('Please implemented or removed Action cleanup.');
 }
 
 if (!getState('isPost')) {
-  run();
+  saveState('isPost', 'true');
+  run().catch((error: Error) => setFailed(error));
 } else {
   cleanup();
 }
