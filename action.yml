@@ -7,8 +7,8 @@ inputs:
     default: ${{ github.token }}
 runs:
   using: 'node20'
-  main: 'dist/index.js'
-  post: 'dist/index.js'
+  main: 'bundle/index.js'
+  post: 'bundle/index.js'
   post-if: always()
 branding:
   icon: 'box'
