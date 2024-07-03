@@ -1,0 +1,63 @@
+From 7d91a6dac5c5f46b5e5526b0cb613865cc73eb3c Mon Sep 17 00:00:00 2001
+From: Cat Chen <catchen@catchen.me>
+Date: Mon, 1 Jul 2024 01:09:18 -0700
+Subject: [PATCH] Optimized release printout
+
+---
+ .github/workflows/release.yml | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
+
+diff --git a/.github/workflows/release.yml b/.github/workflows/release.yml
+index c2b9417..b7673e8 100644
+--- a/.github/workflows/release.yml
++++ b/.github/workflows/release.yml
+@@ -102,28 +102,42 @@ jobs:
+         if: ${{ !inputs.dry-run }}
+         with:
+           ref: ${{ needs.release.outputs.tag }}
++
+       - uses: actions/checkout@v4
+         if: ${{ inputs.dry-run }}
+         with:
+           ref: ${{ github.ref_name || github.ref }}
++
+       - uses: actions/setup-node@v4
+         with:
+           node-version-file: '.nvmrc'
+           check-latest: true
+           registry-url: https://registry.npmjs.org/
+           cache: yarn
+-      - env:
++
++      - name: Build
++        run: |
++          yarn install
++          yarn build
++
++      - name: Publish
++        env:
+           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+           DRY_RUN: ${{ inputs.dry-run || false }}
+         run: |
+-          yarn install
+-          yarn build
+-          npm whoami
++          NPM_WHOAMI=$(npm whoami)
++          echo "::notice::NPM username: $NPM_WHOAMI"
++
++          echo "::group::npm config"
+           npm config ls -l
++          echo "::endgroup::"
++
++          echo "::group::npm config"
+           if [[ "$DRY_RUN" = true ]]
+           then
+             npm publish --dry-run
+           else
+             npm publish
+           fi
++          echo "::endgroup::"
+-- 
+2.45.2
+
