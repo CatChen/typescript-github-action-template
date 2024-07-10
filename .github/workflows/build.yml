@@ -5,6 +5,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main, '[0-9]+-[0-9]+-*']
+    branches-ignore: ['workflows/tests/*']
   workflow_dispatch:
   workflow_call:
   workflow_run:
@@ -15,7 +16,6 @@ on:
 jobs:
   build:
     name: Build
-    if: ${{ !startsWith(github.head_ref, 'workflows/tests/') }}
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write

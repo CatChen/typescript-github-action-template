@@ -3,12 +3,13 @@ name: Dependabot
 on:
   pull_request:
     branches: [main, '[0-9]+-[0-9]+-*']
+    branches-ignore: ['workflows/tests/*']
   workflow_dispatch:
 
 jobs:
   label:
     name: Label
-    if: ${{ !startsWith(github.head_ref, 'workflows/tests/') && github.actor == 'dependabot[bot]' && github.actor_id == 49699333 }}
+    if: ${{ && github.actor == 'dependabot[bot]' && github.actor_id == 49699333 }}
     permissions:
       pull-requests: write
     runs-on: ubuntu-latest
