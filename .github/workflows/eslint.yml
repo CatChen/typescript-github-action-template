@@ -5,9 +5,9 @@ on:
     branches: [main]
   pull_request:
     branches: [main, '[0-9]+-[0-9]+-*']
-    branches-ignore: ['workflows/tests/*']
   workflow_run:
     workflows: ['Dependabot']
+    branches-ignore: ['workflows/tests/*']
     types:
       - completed
   workflow_dispatch:
@@ -16,6 +16,7 @@ on:
 jobs:
   eslint:
     name: ESLint
+    if: ${{ !startsWith(github.head_ref, 'workflows/tests/') }}
     runs-on: ubuntu-latest
 
     steps:
