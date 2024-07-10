@@ -3,6 +3,7 @@ name: Ship
 on:
   pull_request:
     branches: [main]
+    branches-ignore: ['workflows/tests/*']
     types:
       [
         labeled,
@@ -21,7 +22,7 @@ on:
   check_suite:
     types: [completed]
   workflow_run:
-    branches: ['[0-9]+-[0-9]+-*']
+    branches-ignore: ['workflows/tests/*']
     workflows: ['Build', 'Test', 'ESLint', 'CodeQL']
     types: [completed]
 
