@@ -6,7 +6,7 @@
   "types": "dist/index.d.js",
   "type": "module",
   "scripts": {
-    "codegen": "rm -rf src/graphql && graphql-codegen-esm --config codegen.ts",
+    "codegen": "rm -rf src/__graphql__ && graphql-codegen-esm --config codegen.ts",
     "build": "rm -rf dist && yarn tsc",
     "bundle": "rm -rf bundle && yarn ncc build src/index.ts --external eslint --source-map --license licenses.txt --out bundle",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -32,6 +32,7 @@
     "@eslint/eslintrc": "^3.0.2",
     "@eslint/js": "^9.2.0",
     "@graphql-codegen/cli": "5.0.2",
+    "@graphql-codegen/near-operation-file-preset": "^3.0.0",
     "@graphql-codegen/typescript": "4.0.9",
     "@graphql-codegen/typescript-document-nodes": "4.0.9",
     "@serverless-guru/prettier-plugin-import-order": "^0.4.2",

@@ -3,13 +3,17 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
 const config: CodegenConfig = {
   overwrite: true,
   schema: 'https://docs.github.com/public/fpt/schema.docs.graphql',
-  documents: ['src/**/*.ts'],
+  documents: ['src/**/!(*.d).ts'],
   emitLegacyCommonJSImports: false,
   ignoreNoDocuments: true,
   generates: {
-    './src/graphql/': {
+    './src/__graphql__/': {
       preset: 'client',
       config: {
+        useTypeImports: true,
+        enumsAsTypes: true,
+        dedupeFragments: true,
+        nonOptionalTypename: true,
         documentMode: 'string',
       },
     },
