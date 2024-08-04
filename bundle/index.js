@@ -32445,8 +32445,8 @@ class TypedDocumentString extends String {
         return this.value;
     }
 }
-const ViewLoginDocument = new TypedDocumentString(`
-    query ViewLogin {
+const ViewerLoginDocument = new TypedDocumentString(`
+    query ViewerLogin {
   viewer {
     login
   }
@@ -32467,7 +32467,7 @@ const ViewLoginDocument = new TypedDocumentString(`
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    '\n  query ViewLogin {\n    viewer {\n      login\n    }\n  }\n': ViewLoginDocument,
+    '\n  query ViewerLogin {\n    viewer {\n      login\n    }\n  }\n': ViewerLoginDocument,
 };
 function graphql(source) {
     var _a;
@@ -32862,8 +32862,8 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 
-const LOGIN_QUERY = graphql(`
-  query ViewLogin {
+const queryViewerLogin = graphql(`
+  query ViewerLogin {
     viewer {
       login
     }
@@ -32872,7 +32872,7 @@ const LOGIN_QUERY = graphql(`
 function getLogin(githubToken) {
     return __awaiter(this, void 0, void 0, function* () {
         const octokit = getOctokit(githubToken);
-        const { viewer: { login }, } = (yield octokit.graphql(LOGIN_QUERY, {}));
+        const { viewer: { login }, } = (yield octokit.graphql(queryViewerLogin, {}));
         return login;
     });
 }

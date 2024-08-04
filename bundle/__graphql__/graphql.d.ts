@@ -28485,10 +28485,10 @@ export type WorkflowsParametersInput = {
     /** Workflows that must pass for this rule to pass. */
     workflows: Array<WorkflowFileReferenceInput>;
 };
-export type ViewLoginQueryVariables = Exact<{
+export type ViewerLoginQueryVariables = Exact<{
     [key: string]: never;
 }>;
-export type ViewLoginQuery = {
+export type ViewerLoginQuery = {
     __typename: 'Query';
     viewer: {
         __typename: 'User';
@@ -28502,4 +28502,4 @@ export declare class TypedDocumentString<TResult, TVariables> extends String imp
     constructor(value: string, __meta__?: Record<string, any> | undefined);
     toString(): string & DocumentTypeDecoration<TResult, TVariables>;
 }
-export declare const ViewLoginDocument: TypedDocumentString<ViewLoginQuery, ViewLoginQueryVariables>;
+export declare const ViewerLoginDocument: TypedDocumentString<ViewerLoginQuery, ViewerLoginQueryVariables>;

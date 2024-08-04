@@ -31351,9 +31351,9 @@ export type WorkflowsParametersInput = {
   workflows: Array<WorkflowFileReferenceInput>;
 };
 
-export type ViewLoginQueryVariables = Exact<{ [key: string]: never }>;
+export type ViewerLoginQueryVariables = Exact<{ [key: string]: never }>;
 
-export type ViewLoginQuery = {
+export type ViewerLoginQuery = {
   __typename: 'Query';
   viewer: { __typename: 'User'; login: string };
 };
@@ -31376,13 +31376,13 @@ export class TypedDocumentString<TResult, TVariables>
   }
 }
 
-export const ViewLoginDocument = new TypedDocumentString(`
-    query ViewLogin {
+export const ViewerLoginDocument = new TypedDocumentString(`
+    query ViewerLogin {
   viewer {
     login
   }
 }
     `) as unknown as TypedDocumentString<
-  ViewLoginQuery,
-  ViewLoginQueryVariables
+  ViewerLoginQuery,
+  ViewerLoginQueryVariables
 >;

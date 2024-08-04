@@ -12,16 +12,16 @@ import * as types from './graphql.js';
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-  '\n  query ViewLogin {\n    viewer {\n      login\n    }\n  }\n':
-    types.ViewLoginDocument,
+  '\n  query ViewerLogin {\n    viewer {\n      login\n    }\n  }\n':
+    types.ViewerLoginDocument,
 };
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query ViewLogin {\n    viewer {\n      login\n    }\n  }\n',
-): typeof import('./graphql.js').ViewLoginDocument;
+  source: '\n  query ViewerLogin {\n    viewer {\n      login\n    }\n  }\n',
+): typeof import('./graphql.js').ViewerLoginDocument;
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
