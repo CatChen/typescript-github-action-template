@@ -1,3 +1,4 @@
+import type { ResultOf } from '@graphql-typed-document-node/core';
 import {
   error,
   getInput,
@@ -6,22 +7,25 @@ import {
   saveState,
   setFailed,
 } from '@actions/core';
+import { graphql } from './__graphql__/gql.js';
 import { getOctokit } from './getOctokit.js';
+
+const queryViewerLogin = graphql(`
+  query ViewerLogin {
+    viewer {
+      login
+    }
+  }
+`).toString();
 
 export async function getLogin(githubToken: string): Promise<string> {
   const octokit = getOctokit(githubToken);
   const {
     viewer: { login },
-  } = await octokit.graphql<{ viewer: { login: string } }>(
-    `
-      query {
-        viewer {
-          login
-        }
-      }
-    `,
+  } = (await octokit.graphql<{ viewer: { login: string } }>(
+    queryViewerLogin,
     {},
-  );
+  )) as ResultOf<typeof queryViewerLogin>;
   return login;
 }
 
@@ -38,7 +42,7 @@ function cleanup(): void {
   const login = getState('login');
 
   notice(`Goodbye, ${login}!`);
-  error('Please implemented or removed Action cleanup.');
+  error('Please implement or remove Action cleanup.');
 }
 
 if (!getState('isPost')) {

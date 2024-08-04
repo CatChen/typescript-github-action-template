@@ -34,6 +34,7 @@ export default ts.config(
       'dist/**/*',
       'bundle/**/*',
       'eslint.config.js',
+      'codegen.ts',
     ],
     overrides: [
       {

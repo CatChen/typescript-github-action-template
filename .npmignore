@@ -12,3 +12,5 @@ src/
 tests/
 eslint.config.js
 tsconfig.json
+codegen.ts
+schema.graphql

@@ -32434,6 +32434,46 @@ __nccwpck_require__.d(__webpack_exports__, {
 
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
 var core = __nccwpck_require__(2186);
+;// CONCATENATED MODULE: ./src/__graphql__/graphql.ts
+class TypedDocumentString extends String {
+    constructor(value, __meta__) {
+        super(value);
+        this.value = value;
+        this.__meta__ = __meta__;
+    }
+    toString() {
+        return this.value;
+    }
+}
+const ViewerLoginDocument = new TypedDocumentString(`
+    query ViewerLogin {
+  viewer {
+    login
+  }
+}
+    `);
+
+;// CONCATENATED MODULE: ./src/__graphql__/gql.ts
+/* eslint-disable */
+
+/**
+ * Map of all GraphQL operations in the project.
+ *
+ * This map has several performance disadvantages:
+ * 1. It is not tree-shakeable, so it will include all operations in the project.
+ * 2. It is not minifiable, so the string of a GraphQL query will be multiple times inside the bundle.
+ * 3. It does not support dead code elimination, so it will add unused operations.
+ *
+ * Therefore it is highly recommended to use the babel or swc plugin for production.
+ */
+const documents = {
+    '\n  query ViewerLogin {\n    viewer {\n      login\n    }\n  }\n': ViewerLoginDocument,
+};
+function graphql(source) {
+    var _a;
+    return (_a = documents[source]) !== null && _a !== void 0 ? _a : {};
+}
+
 // EXTERNAL MODULE: ./node_modules/@actions/github/lib/utils.js
 var utils = __nccwpck_require__(3030);
 // EXTERNAL MODULE: ./node_modules/bottleneck/light.js
@@ -32821,16 +32861,18 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 };
 
 
+
+const queryViewerLogin = graphql(`
+  query ViewerLogin {
+    viewer {
+      login
+    }
+  }
+`).toString();
 function getLogin(githubToken) {
     return __awaiter(this, void 0, void 0, function* () {
         const octokit = getOctokit(githubToken);
-        const { viewer: { login }, } = yield octokit.graphql(`
-      query {
-        viewer {
-          login
-        }
-      }
-    `, {});
+        const { viewer: { login }, } = (yield octokit.graphql(queryViewerLogin, {}));
         return login;
     });
 }
@@ -32846,7 +32888,7 @@ function run() {
 function cleanup() {
     const login = (0,core.getState)('login');
     (0,core.notice)(`Goodbye, ${login}!`);
-    (0,core.error)('Please implemented or removed Action cleanup.');
+    (0,core.error)('Please implement or remove Action cleanup.');
 }
 if (!(0,core.getState)('isPost')) {
     (0,core.saveState)('isPost', 'true');
