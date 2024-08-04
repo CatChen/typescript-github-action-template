@@ -10,8 +10,8 @@ import {
 import { graphql } from './__graphql__/gql.js';
 import { getOctokit } from './getOctokit.js';
 
-const LOGIN_QUERY = graphql(`
-  query ViewLogin {
+const queryViewerLogin = graphql(`
+  query ViewerLogin {
     viewer {
       login
     }
@@ -23,9 +23,9 @@ export async function getLogin(githubToken: string): Promise<string> {
   const {
     viewer: { login },
   } = (await octokit.graphql<{ viewer: { login: string } }>(
-    LOGIN_QUERY,
+    queryViewerLogin,
     {},
-  )) as ResultOf<typeof LOGIN_QUERY>;
+  )) as ResultOf<typeof queryViewerLogin>;
   return login;
 }
 
