@@ -12,7 +12,6 @@
     "lint": "eslint -c eslint.config.js",
     "prepublishOnly": "pinst --disable && yarn build",
     "postpublish": "pinst --enable",
-    "preversion": "yarn && yarn build && yarn bundle",
     "prepare": "is-ci || husky"
   },
   "repository": {
