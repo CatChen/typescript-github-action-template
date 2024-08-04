@@ -7,8 +7,8 @@ import {
   saveState,
   setFailed,
 } from '@actions/core';
+import { graphql } from './__graphql__/gql.js';
 import { getOctokit } from './getOctokit.js';
-import { graphql } from './graphql/gql.js';
 
 const LOGIN_QUERY = graphql(`
   query ViewLogin {

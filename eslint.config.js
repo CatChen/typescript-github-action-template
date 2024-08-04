@@ -31,7 +31,6 @@ export default ts.config(
     rules: {},
     ignorePatterns: [
       'node_modules/**/*',
-      'src/graphql/**/*',
       'dist/**/*',
       'bundle/**/*',
       'eslint.config.js',
