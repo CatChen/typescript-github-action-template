@@ -14617,6 +14617,10 @@ enum FundingPlatform {
   """
   POLAR
   """
+  thanks.dev funding platform.
+  """
+  THANKS_DEV
+  """
   Tidelift funding platform.
   """
   TIDELIFT

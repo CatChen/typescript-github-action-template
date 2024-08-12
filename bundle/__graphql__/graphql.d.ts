@@ -7832,6 +7832,8 @@ export type FundingPlatform =
  | 'PATREON'
 /** Polar funding platform. */
  | 'POLAR'
+/** thanks.dev funding platform. */
+ | 'THANKS_DEV'
 /** Tidelift funding platform. */
  | 'TIDELIFT';
 /** A generic hovercard context with a message and icon */
