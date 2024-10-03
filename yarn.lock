@@ -8,9 +8,9 @@
   integrity sha512-E3Qku4mTzdrlwVWGPxklDnME5ANrEGetvYw4i2GCRlppWXXE4QD66j7pwb8HelZwS6LnqEChhrSOGCXpbiu6MQ==
 
 "@0no-co/graphqlsp@^1.12.12":
-  version "1.12.15"
-  resolved "https://registry.yarnpkg.com/@0no-co/graphqlsp/-/graphqlsp-1.12.15.tgz#b58e892308202e1d3dbc9564fba10b5185795f20"
-  integrity sha512-3DHkAu4JCp+T7U4n/9VoXe8pfGjPnDHXKupCFULkBINK8j4fk6umqseLuQaZLcz6DG5JayGZ3zdhUxdUVlumdA==
+  version "1.12.16"
+  resolved "https://registry.yarnpkg.com/@0no-co/graphqlsp/-/graphqlsp-1.12.16.tgz#58fe7bad53b3ad9fdf2d5f41ddeb9b418d289a03"
+  integrity sha512-B5pyYVH93Etv7xjT6IfB7QtMBdaaC07yjbhN6v8H7KgFStMkPvi+oWYBTibMFRMY89qwc9H8YixXg8SXDVgYWw==
   dependencies:
     "@gql.tada/internal" "^1.0.0"
     graphql "^15.5.0 || ^16.0.0 || ^17.0.0"
