@@ -2213,6 +2213,12 @@ export type EnterpriseDefaultRepositoryPermissionSettingValue =
  | 'READ'
 /** Organization members will be able to clone, pull, and push all organization repositories. */
  | 'WRITE';
+/** The possible values for an enabled/no policy enterprise setting. */
+export type EnterpriseDisallowedMethodsSettingValue = 
+/** The setting prevents insecure 2FA methods from being used by members of the enterprise. */
+'INSECURE'
+/** There is no policy set for preventing insecure 2FA methods from being used by members of the enterprise. */
+ | 'NO_POLICY';
 /** The possible values for an enabled/disabled enterprise setting. */
 export type EnterpriseEnabledDisabledSettingValue = 
 /** The setting is disabled for organizations in the enterprise. */
@@ -2520,18 +2526,12 @@ export type FileDeletion = {
     /** The path to delete */
     path: Scalars['String']['input'];
 };
-/**
- * Prevent commits that include files with specified file extensions from being
- * pushed to the commit graph. NOTE: This rule is in beta and subject to change
- */
+/** Prevent commits that include files with specified file extensions from being pushed to the commit graph. */
 export type FileExtensionRestrictionParametersInput = {
     /** The file extensions that are restricted from being pushed to the commit graph. */
     restrictedFileExtensions: Array<Scalars['String']['input']>;
 };
-/**
- * Prevent commits that include changes in specified file paths from being pushed
- * to the commit graph. NOTE: This rule is in beta and subject to change
- */
+/** Prevent commits that include changes in specified file paths from being pushed to the commit graph. */
 export type FilePathRestrictionParametersInput = {
     /** The file paths that are restricted from being pushed to the commit graph. */
     restrictedFilePaths: Array<Scalars['String']['input']>;
@@ -2999,18 +2999,12 @@ export type MarkPullRequestReadyForReviewInput = {
     /** ID of the pull request to be marked as ready for review. */
     pullRequestId: Scalars['ID']['input'];
 };
-/**
- * Prevent commits that include file paths that exceed a specified character limit
- * from being pushed to the commit graph. NOTE: This rule is in beta and subject to change
- */
+/** Prevent commits that include file paths that exceed a specified character limit from being pushed to the commit graph. */
 export type MaxFilePathLengthParametersInput = {
     /** The maximum amount of characters allowed in file paths */
     maxFilePathLength: Scalars['Int']['input'];
 };
-/**
- * Prevent commits that exceed a specified file size limit from being pushed to the
- * commit. NOTE: This rule is in beta and subject to change
- */
+/** Prevent commits that exceed a specified file size limit from being pushed to the commit. */
 export type MaxFileSizeParametersInput = {
     /** The maximum file size allowed in megabytes. This limit does not apply to Git Large File Storage (Git LFS). */
     maxFileSize: Scalars['Int']['input'];
@@ -4664,28 +4658,15 @@ export type RepositoryRuleType =
  | 'CREATION'
 /** Only allow users with bypass permissions to delete matching refs. */
  | 'DELETION'
-/**
- * Prevent commits that include files with specified file extensions from being
- * pushed to the commit graph. NOTE: This rule is in beta and subject to change
- */
+/** Prevent commits that include files with specified file extensions from being pushed to the commit graph. */
  | 'FILE_EXTENSION_RESTRICTION'
-/**
- * Prevent commits that include changes in specified file paths from being pushed
- * to the commit graph. NOTE: This rule is in beta and subject to change
- */
+/** Prevent commits that include changes in specified file paths from being pushed to the commit graph. */
  | 'FILE_PATH_RESTRICTION'
 /** Branch is read-only. Users cannot push to the branch. */
  | 'LOCK_BRANCH'
-/**
- * Prevent commits that include file paths that exceed a specified character
- * limit from being pushed to the commit graph. NOTE: This rule is in beta and
- * subject to change
- */
+/** Prevent commits that include file paths that exceed a specified character limit from being pushed to the commit graph. */
  | 'MAX_FILE_PATH_LENGTH'
-/**
- * Prevent commits that exceed a specified file size limit from being pushed to
- * the commit. NOTE: This rule is in beta and subject to change
- */
+/** Prevent commits that exceed a specified file size limit from being pushed to the commit. */
  | 'MAX_FILE_SIZE'
 /** Max ref updates */
  | 'MAX_REF_UPDATES'
@@ -4748,12 +4729,14 @@ export type RepositoryRulesetBypassActorInput = {
     bypassMode: RepositoryRulesetBypassActorBypassMode;
     /** For deploy key bypasses, true. Can only use ALWAYS as the bypass mode */
     deployKey?: InputMaybe<Scalars['Boolean']['input']>;
+    /** For enterprise owner bypasses, true */
+    enterpriseOwner?: InputMaybe<Scalars['Boolean']['input']>;
     /** For organization owner bypasses, true */
     organizationAdmin?: InputMaybe<Scalars['Boolean']['input']>;
     /** For role bypasses, the role database ID */
     repositoryRoleDatabaseId?: InputMaybe<Scalars['Int']['input']>;
 };
-/** The targets supported for rulesets. NOTE: The push target is in beta and subject to change. */
+/** The targets supported for rulesets. */
 export type RepositoryRulesetTarget = 
 /** Branch */
 'BRANCH'
@@ -5047,8 +5030,12 @@ export type SecurityAdvisoryOrder = {
 };
 /** Properties by which security advisory connections can be ordered. */
 export type SecurityAdvisoryOrderField = 
+/** Order advisories by EPSS percentage */
+'EPSS_PERCENTAGE'
+/** Order advisories by EPSS percentile */
+ | 'EPSS_PERCENTILE'
 /** Order advisories by publication time */
-'PUBLISHED_AT'
+ | 'PUBLISHED_AT'
 /** Order advisories by update time */
  | 'UPDATED_AT';
 /** Severity of the vulnerability. */
@@ -6060,6 +6047,14 @@ export type TransferIssueInput = {
     /** The Node ID of the repository the issue should be transferred to */
     repositoryId: Scalars['ID']['input'];
 };
+/** Filters by whether or not 2FA is enabled and if the method configured is considered secure or insecure. */
+export type TwoFactorCredentialSecurityType = 
+/** No method of two-factor authentication. */
+'DISABLED'
+/** Has an insecure method of two-factor authentication. GitHub currently defines this as SMS two-factor authentication. */
+ | 'INSECURE'
+/** Has only secure methods of two-factor authentication. */
+ | 'SECURE';
 /** Autogenerated input type of UnarchiveProjectV2Item */
 export type UnarchiveProjectV2ItemInput = {
     /** A unique identifier for the client performing the mutation. */
@@ -6472,6 +6467,15 @@ export type UpdateEnterpriseTeamDiscussionsSettingInput = {
     enterpriseId: Scalars['ID']['input'];
     /** The value for the team discussions setting on the enterprise. */
     settingValue: EnterpriseEnabledDisabledSettingValue;
+};
+/** Autogenerated input type of UpdateEnterpriseTwoFactorAuthenticationDisallowedMethodsSetting */
+export type UpdateEnterpriseTwoFactorAuthenticationDisallowedMethodsSettingInput = {
+    /** A unique identifier for the client performing the mutation. */
+    clientMutationId?: InputMaybe<Scalars['String']['input']>;
+    /** The ID of the enterprise on which to set the two-factor authentication disallowed methods setting. */
+    enterpriseId: Scalars['ID']['input'];
+    /** The value for the two-factor authentication disallowed methods setting on the enterprise. */
+    settingValue: EnterpriseDisallowedMethodsSettingValue;
 };
 /** Autogenerated input type of UpdateEnterpriseTwoFactorAuthenticationRequiredSetting */
 export type UpdateEnterpriseTwoFactorAuthenticationRequiredSettingInput = {
