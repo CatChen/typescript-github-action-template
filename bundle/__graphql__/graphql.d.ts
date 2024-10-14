@@ -2741,6 +2741,8 @@ export type IpAllowListForInstalledAppsEnabledSettingValue =
 export type IssueClosedStateReason = 
 /** An issue that has been closed as completed */
 'COMPLETED'
+/** An issue that has been closed as a duplicate */
+ | 'DUPLICATE'
 /** An issue that has been closed as not planned */
  | 'NOT_PLANNED';
 /** Ways in which lists of issue comments can be ordered upon return. */
@@ -2811,6 +2813,8 @@ export type IssueState =
 export type IssueStateReason = 
 /** An issue that has been closed as completed */
 'COMPLETED'
+/** An issue that has been closed as a duplicate */
+ | 'DUPLICATE'
 /** An issue that has been closed as not planned */
  | 'NOT_PLANNED'
 /** An issue that has been reopened */
