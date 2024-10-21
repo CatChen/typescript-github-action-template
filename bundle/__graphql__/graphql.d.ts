@@ -7024,6 +7024,12 @@ export type UserStatusOrder = {
 export type UserStatusOrderField = 
 /** Order user statuses by when they were updated. */
 'UPDATED_AT';
+/** Whether a user being viewed contains public or private information. */
+export type UserViewType = 
+/** A user containing information only visible to the authenticated user. */
+'PRIVATE'
+/** A user that is publicly visible. */
+ | 'PUBLIC';
 /** Ordering options for verifiable domain connections. */
 export type VerifiableDomainOrder = {
     /** The ordering direction. */
