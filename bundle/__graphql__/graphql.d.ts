@@ -5115,8 +5115,10 @@ export type SetUserInteractionLimitInput = {
 };
 /** Software or company that hosts social media accounts. */
 export type SocialAccountProvider = 
+/** Decentralized microblogging social platform. */
+'BLUESKY'
 /** Social media and networking website. */
-'FACEBOOK'
+ | 'FACEBOOK'
 /** Catch-all for social media providers that do not yet have specific handling. */
  | 'GENERIC'
 /** Fork of Mastodon with a greater focus on local posting. */
