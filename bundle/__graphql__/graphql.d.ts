@@ -1032,6 +1032,18 @@ export type ConvertPullRequestToDraftInput = {
     /** ID of the pull request to convert to draft */
     pullRequestId: Scalars['ID']['input'];
 };
+/** Indicates the type of access a user has to GitHub Copilot */
+export type CopilotLicenseType = 
+/** Business access */
+'COPILOT_BUSINESS'
+/** Enterprise access */
+ | 'COPILOT_ENTERPRISE'
+/** Limited free access */
+ | 'COPILOT_FREE'
+/** Individual access */
+ | 'COPILOT_INDIVIDUAL'
+/** No access found */
+ | 'NO_ACCESS';
 /** The type of the activity that was performed. */
 export type CopilotLimitedFeature = 
 /** Copilot Chat. */
