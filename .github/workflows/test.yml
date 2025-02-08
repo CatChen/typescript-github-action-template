@@ -16,7 +16,7 @@ on:
 jobs:
   test:
     name: Test
-    if: ${{ !startsWith(github.head_ref, 'workflows/tests/') }}
+    if: ${{ !startsWith(github.head_ref || github.event.workflow_run.head_branch, 'workflows/tests/') }}
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
