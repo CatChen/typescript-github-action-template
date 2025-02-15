@@ -3834,6 +3834,8 @@ export type CreateProjectV2FieldInput = {
     clientMutationId?: InputMaybe<Scalars['String']['input']>;
     /** The data type of the field. */
     dataType: ProjectV2CustomFieldType;
+    /** Configuration for an iteration field. */
+    iterationConfiguration?: InputMaybe<ProjectV2IterationFieldConfigurationInput>;
     /** The name of the field. */
     name: Scalars['String']['input'];
     /** The ID of the Project to create the field in. */
@@ -16116,6 +16118,8 @@ export type ProjectV2Connection = {
 export type ProjectV2CustomFieldType = 
 /** Date */
 'DATE'
+/** Iteration */
+ | 'ITERATION'
 /** Number */
  | 'NUMBER'
 /** Single Select */
@@ -16605,6 +16609,15 @@ export type ProjectV2ItemType =
  | 'PULL_REQUEST'
 /** Redacted Item */
  | 'REDACTED';
+/** Represents an iteration */
+export type ProjectV2Iteration = {
+    /** The duration of the iteration, in days. */
+    duration: Scalars['Int']['input'];
+    /** The start date for the iteration. */
+    startDate: Scalars['Date']['input'];
+    /** The title for the iteration. */
+    title: Scalars['String']['input'];
+};
 /** An iteration field inside a project. */
 export type ProjectV2IterationField = Node & ProjectV2FieldCommon & {
     __typename: 'ProjectV2IterationField';
@@ -16636,6 +16649,15 @@ export type ProjectV2IterationFieldConfiguration = {
     iterations: Array<ProjectV2IterationFieldIteration>;
     /** The iteration's start day of the week */
     startDay: Scalars['Int']['output'];
+};
+/** Represents an iteration field configuration. */
+export type ProjectV2IterationFieldConfigurationInput = {
+    /** The duration of each iteration, in days. */
+    duration: Scalars['Int']['input'];
+    /** Zero or more iterations for the field. */
+    iterations: Array<ProjectV2Iteration>;
+    /** The start date for the first iteration. */
+    startDate: Scalars['Date']['input'];
 };
 /** Iteration field iteration settings for a project. */
 export type ProjectV2IterationFieldIteration = {
@@ -27512,6 +27534,8 @@ export type UpdateProjectV2FieldInput = {
     clientMutationId?: InputMaybe<Scalars['String']['input']>;
     /** The ID of the field to update. */
     fieldId: Scalars['ID']['input'];
+    /** Configuration for an iteration field. */
+    iterationConfiguration?: InputMaybe<ProjectV2IterationFieldConfigurationInput>;
     /** The name to update. */
     name?: InputMaybe<Scalars['String']['input']>;
     /**
