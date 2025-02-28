@@ -19588,8 +19588,8 @@ export type PullRequestOrderField =
 export type PullRequestParameters = {
   __typename: 'PullRequestParameters';
   /**
-   * When merging pull requests, you can allow any combination of merge commits,
-   * squashing, or rebasing. At least one option must be enabled.
+   * Array of allowed merge methods. Allowed values include `merge`, `squash`, and
+   * `rebase`. At least one option must be enabled.
    */
   allowedMergeMethods?: Maybe<Array<Scalars['String']['output']>>;
   /** New, reviewable commits pushed will dismiss previous pull request review approvals. */
@@ -19607,8 +19607,8 @@ export type PullRequestParameters = {
 /** Require all commits be made to a non-target branch and submitted via a pull request before they can be merged. */
 export type PullRequestParametersInput = {
   /**
-   * When merging pull requests, you can allow any combination of merge commits,
-   * squashing, or rebasing. At least one option must be enabled.
+   * Array of allowed merge methods. Allowed values include `merge`, `squash`, and
+   * `rebase`. At least one option must be enabled.
    */
   allowedMergeMethods?: InputMaybe<Array<Scalars['String']['input']>>;
   /** New, reviewable commits pushed will dismiss previous pull request review approvals. */
@@ -31724,8 +31724,6 @@ export type UserNamespaceRepository = Node & {
   nameWithOwner: Scalars['String']['output'];
   /** The user owner of the repository. */
   owner: RepositoryOwner;
-  /** The repository owned by an enterprise managed user. */
-  repository?: Maybe<RepositoryInfo>;
 };
 
 /** A list of repositories owned by users in an enterprise with Enterprise Managed Users. */
