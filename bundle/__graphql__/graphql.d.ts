@@ -236,6 +236,26 @@ export type Actor = {
 export type ActorAvatarUrlArgs = {
     size?: InputMaybe<Scalars['Int']['input']>;
 };
+/** The connection type for Actor. */
+export type ActorConnection = {
+    __typename: 'ActorConnection';
+    /** A list of edges. */
+    edges?: Maybe<Array<Maybe<ActorEdge>>>;
+    /** A list of nodes. */
+    nodes?: Maybe<Array<Maybe<Actor>>>;
+    /** Information to aid in pagination. */
+    pageInfo: PageInfo;
+    /** Identifies the total count of items in the connection. */
+    totalCount: Scalars['Int']['output'];
+};
+/** An edge in a connection. */
+export type ActorEdge = {
+    __typename: 'ActorEdge';
+    /** A cursor for use in pagination. */
+    cursor: Scalars['String']['output'];
+    /** The item at the end of the edge. */
+    node?: Maybe<Actor>;
+};
 /** Location information for an actor */
 export type ActorLocation = {
     __typename: 'ActorLocation';
@@ -880,8 +900,19 @@ export type ArchiveRepositoryPayload = {
 };
 /** An object that can have users assigned to it. */
 export type Assignable = {
+    /** A list of actors assigned to this object. */
+    assignedActors: AssigneeConnection;
     /** A list of Users assigned to this object. */
     assignees: UserConnection;
+    /** A list of suggested actors to assign to this object */
+    suggestedActors: AssigneeConnection;
+};
+/** An object that can have users assigned to it. */
+export type AssignableAssignedActorsArgs = {
+    after?: InputMaybe<Scalars['String']['input']>;
+    before?: InputMaybe<Scalars['String']['input']>;
+    first?: InputMaybe<Scalars['Int']['input']>;
+    last?: InputMaybe<Scalars['Int']['input']>;
 };
 /** An object that can have users assigned to it. */
 export type AssignableAssigneesArgs = {
@@ -889,6 +920,14 @@ export type AssignableAssigneesArgs = {
     before?: InputMaybe<Scalars['String']['input']>;
     first?: InputMaybe<Scalars['Int']['input']>;
     last?: InputMaybe<Scalars['Int']['input']>;
+};
+/** An object that can have users assigned to it. */
+export type AssignableSuggestedActorsArgs = {
+    after?: InputMaybe<Scalars['String']['input']>;
+    before?: InputMaybe<Scalars['String']['input']>;
+    first?: InputMaybe<Scalars['Int']['input']>;
+    last?: InputMaybe<Scalars['Int']['input']>;
+    query?: InputMaybe<Scalars['String']['input']>;
 };
 /** Represents an 'assigned' event on any assignable object. */
 export type AssignedEvent = Node & {
@@ -911,6 +950,26 @@ export type AssignedEvent = Node & {
 };
 /** Types that can be assigned to issues. */
 export type Assignee = Bot | Mannequin | Organization | User;
+/** The connection type for Assignee. */
+export type AssigneeConnection = {
+    __typename: 'AssigneeConnection';
+    /** A list of edges. */
+    edges?: Maybe<Array<Maybe<AssigneeEdge>>>;
+    /** A list of nodes. */
+    nodes?: Maybe<Array<Maybe<Assignee>>>;
+    /** Information to aid in pagination. */
+    pageInfo: PageInfo;
+    /** Identifies the total count of items in the connection. */
+    totalCount: Scalars['Int']['output'];
+};
+/** An edge in a connection. */
+export type AssigneeEdge = {
+    __typename: 'AssigneeEdge';
+    /** A cursor for use in pagination. */
+    cursor: Scalars['String']['output'];
+    /** The item at the end of the edge. */
+    node?: Maybe<Assignee>;
+};
 /** An entry in the audit log. */
 export type AuditEntry = {
     /**
@@ -8672,6 +8731,8 @@ export type Issue = Assignable & Closable & Comment & Deletable & Labelable & Lo
     __typename: 'Issue';
     /** Reason that the conversation was locked. */
     activeLockReason?: Maybe<LockReason>;
+    /** A list of actors assigned to this object. */
+    assignedActors: AssigneeConnection;
     /** A list of Users assigned to this object. */
     assignees: UserConnection;
     /** The actor who authored the comment. */
@@ -8763,6 +8824,8 @@ export type Issue = Assignable & Closable & Comment & Deletable & Labelable & Lo
     subIssues: IssueConnection;
     /** Summary of the state of an issue's sub-issues */
     subIssuesSummary: SubIssuesSummary;
+    /** A list of suggested actors to assign to this object */
+    suggestedActors: AssigneeConnection;
     /**
      * A list of events, comments, commits, etc. associated with the issue.
      * @deprecated `timeline` will be removed Use Issue.timelineItems instead. Removal on 2020-10-01 UTC.
@@ -8810,6 +8873,13 @@ export type Issue = Assignable & Closable & Comment & Deletable & Labelable & Lo
     viewerThreadSubscriptionFormAction?: Maybe<ThreadSubscriptionFormAction>;
     /** Identifies the viewer's thread subscription status. */
     viewerThreadSubscriptionStatus?: Maybe<ThreadSubscriptionState>;
+};
+/** An Issue is a place to discuss ideas, enhancements, tasks, and bugs for a project. */
+export type IssueAssignedActorsArgs = {
+    after?: InputMaybe<Scalars['String']['input']>;
+    before?: InputMaybe<Scalars['String']['input']>;
+    first?: InputMaybe<Scalars['Int']['input']>;
+    last?: InputMaybe<Scalars['Int']['input']>;
 };
 /** An Issue is a place to discuss ideas, enhancements, tasks, and bugs for a project. */
 export type IssueAssigneesArgs = {
@@ -8911,6 +8981,14 @@ export type IssueSubIssuesArgs = {
     before?: InputMaybe<Scalars['String']['input']>;
     first?: InputMaybe<Scalars['Int']['input']>;
     last?: InputMaybe<Scalars['Int']['input']>;
+};
+/** An Issue is a place to discuss ideas, enhancements, tasks, and bugs for a project. */
+export type IssueSuggestedActorsArgs = {
+    after?: InputMaybe<Scalars['String']['input']>;
+    before?: InputMaybe<Scalars['String']['input']>;
+    first?: InputMaybe<Scalars['Int']['input']>;
+    last?: InputMaybe<Scalars['Int']['input']>;
+    query?: InputMaybe<Scalars['String']['input']>;
 };
 /** An Issue is a place to discuss ideas, enhancements, tasks, and bugs for a project. */
 export type IssueTimelineArgs = {
@@ -11495,6 +11573,8 @@ export type Mutation = {
     reopenPullRequest?: Maybe<ReopenPullRequestPayload>;
     /** Reorder a pinned repository environment */
     reorderEnvironment?: Maybe<ReorderEnvironmentPayload>;
+    /** Replaces all actors for assignable object. */
+    replaceActorsForAssignable?: Maybe<ReplaceActorsForAssignablePayload>;
     /** Reprioritizes a sub-issue to a different position in the parent list. */
     reprioritizeSubIssue?: Maybe<ReprioritizeSubIssuePayload>;
     /** Set review requests on a pull request. */
@@ -12342,6 +12422,10 @@ export type MutationReopenPullRequestArgs = {
 /** The root query for implementing GraphQL mutations. */
 export type MutationReorderEnvironmentArgs = {
     input: ReorderEnvironmentInput;
+};
+/** The root query for implementing GraphQL mutations. */
+export type MutationReplaceActorsForAssignableArgs = {
+    input: ReplaceActorsForAssignableInput;
 };
 /** The root query for implementing GraphQL mutations. */
 export type MutationReprioritizeSubIssueArgs = {
@@ -19370,6 +19454,8 @@ export type PullRequest = Assignable & Closable & Comment & Labelable & Lockable
     activeLockReason?: Maybe<LockReason>;
     /** The number of additions in this pull request. */
     additions: Scalars['Int']['output'];
+    /** A list of actors assigned to this object. */
+    assignedActors: AssigneeConnection;
     /** A list of Users assigned to this object. */
     assignees: UserConnection;
     /** The actor who authored the comment. */
@@ -19533,6 +19619,8 @@ export type PullRequest = Assignable & Closable & Comment & Labelable & Lockable
     state: PullRequestState;
     /** Check and Status rollup information for the PR's head ref. */
     statusCheckRollup?: Maybe<StatusCheckRollup>;
+    /** A list of suggested actors to assign to this object */
+    suggestedActors: AssigneeConnection;
     /** A list of reviewer suggestions based on commit history and past review comments. */
     suggestedReviewers: Array<Maybe<SuggestedReviewer>>;
     /**
@@ -19597,6 +19685,13 @@ export type PullRequest = Assignable & Closable & Comment & Labelable & Lockable
     viewerMergeHeadlineText: Scalars['String']['output'];
     /** Identifies if the viewer is watching, not watching, or ignoring the subscribable entity. */
     viewerSubscription?: Maybe<SubscriptionState>;
+};
+/** A repository pull request. */
+export type PullRequestAssignedActorsArgs = {
+    after?: InputMaybe<Scalars['String']['input']>;
+    before?: InputMaybe<Scalars['String']['input']>;
+    first?: InputMaybe<Scalars['Int']['input']>;
+    last?: InputMaybe<Scalars['Int']['input']>;
 };
 /** A repository pull request. */
 export type PullRequestAssigneesArgs = {
@@ -19731,6 +19826,14 @@ export type PullRequestReviewsArgs = {
     first?: InputMaybe<Scalars['Int']['input']>;
     last?: InputMaybe<Scalars['Int']['input']>;
     states?: InputMaybe<Array<PullRequestReviewState>>;
+};
+/** A repository pull request. */
+export type PullRequestSuggestedActorsArgs = {
+    after?: InputMaybe<Scalars['String']['input']>;
+    before?: InputMaybe<Scalars['String']['input']>;
+    first?: InputMaybe<Scalars['Int']['input']>;
+    last?: InputMaybe<Scalars['Int']['input']>;
+    query?: InputMaybe<Scalars['String']['input']>;
 };
 /** A repository pull request. */
 export type PullRequestTimelineArgs = {
@@ -21835,6 +21938,23 @@ export type ReorderEnvironmentPayload = {
     clientMutationId?: Maybe<Scalars['String']['output']>;
     /** The environment that was reordered */
     environment?: Maybe<Environment>;
+};
+/** Autogenerated input type of ReplaceActorsForAssignable */
+export type ReplaceActorsForAssignableInput = {
+    /** The ids of the actors to replace the existing assignees. */
+    actorIds: Array<Scalars['ID']['input']>;
+    /** The id of the assignable object to replace the assignees for. */
+    assignableId: Scalars['ID']['input'];
+    /** A unique identifier for the client performing the mutation. */
+    clientMutationId?: InputMaybe<Scalars['String']['input']>;
+};
+/** Autogenerated return type of ReplaceActorsForAssignable. */
+export type ReplaceActorsForAssignablePayload = {
+    __typename: 'ReplaceActorsForAssignablePayload';
+    /** The item that was assigned. */
+    assignable?: Maybe<Assignable>;
+    /** A unique identifier for the client performing the mutation. */
+    clientMutationId?: Maybe<Scalars['String']['output']>;
 };
 /** Audit log entry for a repo.access event. */
 export type RepoAccessAuditEntry = AuditEntry & Node & OrganizationAuditEntryData & RepositoryAuditEntryData & {
@@ -24091,6 +24211,8 @@ export type Repository = Node & PackageOwner & ProjectOwner & ProjectV2Recent & 
      * .gitmodules file as of the default branch's HEAD commit.
      */
     submodules: SubmoduleConnection;
+    /** A list of suggested actors that can be attributed to content in this repository. */
+    suggestedActors: ActorConnection;
     /** Temporary authentication token for cloning this repository. */
     tempCloneToken?: Maybe<Scalars['String']['output']>;
     /** The repository from which this repository was generated, if any. */
@@ -24485,6 +24607,16 @@ export type RepositorySubmodulesArgs = {
     before?: InputMaybe<Scalars['String']['input']>;
     first?: InputMaybe<Scalars['Int']['input']>;
     last?: InputMaybe<Scalars['Int']['input']>;
+};
+/** A repository contains the content for a project. */
+export type RepositorySuggestedActorsArgs = {
+    after?: InputMaybe<Scalars['String']['input']>;
+    before?: InputMaybe<Scalars['String']['input']>;
+    capabilities: Array<RepositorySuggestedActorFilter>;
+    first?: InputMaybe<Scalars['Int']['input']>;
+    last?: InputMaybe<Scalars['Int']['input']>;
+    loginNames?: InputMaybe<Scalars['String']['input']>;
+    query?: InputMaybe<Scalars['String']['input']>;
 };
 /** A repository contains the content for a project. */
 export type RepositoryVulnerabilityAlertArgs = {
@@ -25339,6 +25471,12 @@ export type RepositoryRulesetTarget =
  | 'REPOSITORY'
 /** Tag */
  | 'TAG';
+/** The possible filters for suggested actors in a repository */
+export type RepositorySuggestedActorFilter = 
+/** Actors that can be assigned to issues and pull requests */
+'CAN_BE_ASSIGNED'
+/** Actors that can be the author of issues and pull requests */
+ | 'CAN_BE_AUTHOR';
 /** A repository-topic connects a repository to a topic. */
 export type RepositoryTopic = Node & UniformResourceLocatable & {
     __typename: 'RepositoryTopic';
