@@ -56726,7 +56726,7 @@ input UpdateIssueIssueTypeInput {
   """
   The ID of the issue type to update on the issue
   """
-  issueTypeId: ID @possibleTypes(concreteTypes: ["IssueType"])
+  issueTypeId: ID
 }
 
 """
