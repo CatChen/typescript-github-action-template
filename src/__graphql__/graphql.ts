@@ -6765,10 +6765,13 @@ export type DraftPullRequestReviewComment = {
 export type DraftPullRequestReviewThread = {
   /** Body of the comment to leave. */
   body: Scalars['String']['input'];
-  /** The line of the blob to which the thread refers. The end of the line range for multi-line comments. */
-  line: Scalars['Int']['input'];
-  /** Path to the file being commented on. */
-  path: Scalars['String']['input'];
+  /**
+   * The line of the blob to which the thread refers. The end of the line range for
+   * multi-line comments. Required if not using positioning.
+   */
+  line?: InputMaybe<Scalars['Int']['input']>;
+  /** Path to the file being commented on. Required if not using positioning. */
+  path?: InputMaybe<Scalars['String']['input']>;
   /** The side of the diff on which the line resides. For multi-line comments, this is the side for the end of the line range. */
   side?: InputMaybe<DiffSide>;
   /** The first line of the range to which the comment refers. */
@@ -11917,6 +11920,8 @@ export type Milestone = Closable &
     closed: Scalars['Boolean']['output'];
     /** Identifies the date and time when the object was closed. */
     closedAt?: Maybe<Scalars['DateTime']['output']>;
+    /** Identifies the number of closed issues associated with the milestone. */
+    closedIssueCount: Scalars['Int']['output'];
     /** Identifies the date and time when the object was created. */
     createdAt: Scalars['DateTime']['output'];
     /** Identifies the actor who created the milestone. */
@@ -11933,6 +11938,8 @@ export type Milestone = Closable &
     issues: IssueConnection;
     /** Identifies the number of the milestone. */
     number: Scalars['Int']['output'];
+    /** Identifies the number of open issues associated with the milestone. */
+    openIssueCount: Scalars['Int']['output'];
     /** Identifies the percentage complete for the milestone */
     progressPercentage: Scalars['Float']['output'];
     /** A list of pull requests associated with the milestone. */
