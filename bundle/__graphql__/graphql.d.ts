@@ -602,7 +602,7 @@ export type AddPullRequestReviewThreadInput = {
      */
     line?: InputMaybe<Scalars['Int']['input']>;
     /** Path to the file being commented on. */
-    path: Scalars['String']['input'];
+    path?: InputMaybe<Scalars['String']['input']>;
     /** The node ID of the pull request reviewing */
     pullRequestId?: InputMaybe<Scalars['ID']['input']>;
     /** The Node ID of the review to modify. */
