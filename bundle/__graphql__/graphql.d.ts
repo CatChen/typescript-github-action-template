@@ -1291,6 +1291,8 @@ export type Bot = Actor & Node & UniformResourceLocatable & {
 export type BotAvatarUrlArgs = {
     size?: InputMaybe<Scalars['Int']['input']>;
 };
+/** Used when either Bot or User are accepted. */
+export type BotOrUser = Bot | User;
 /** Types which can be actors for `BranchActorAllowance` objects. */
 export type BranchActorAllowanceActor = App | Team | User;
 /** Parameters to be used for the branch_name_pattern rule */
@@ -32977,9 +32979,9 @@ export type ViewerLoginQuery = {
     };
 };
 export declare class TypedDocumentString<TResult, TVariables> extends String implements DocumentTypeDecoration<TResult, TVariables> {
+    __apiType?: DocumentTypeDecoration<TResult, TVariables>['__apiType'];
     private value;
     __meta__?: Record<string, any> | undefined;
-    __apiType?: DocumentTypeDecoration<TResult, TVariables>['__apiType'];
     constructor(value: string, __meta__?: Record<string, any> | undefined);
     toString(): string & DocumentTypeDecoration<TResult, TVariables>;
 }

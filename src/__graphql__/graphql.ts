@@ -1344,6 +1344,9 @@ export type BotAvatarUrlArgs = {
   size?: InputMaybe<Scalars['Int']['input']>;
 };
 
+/** Used when either Bot or User are accepted. */
+export type BotOrUser = Bot | User;
+
 /** Types which can be actors for `BranchActorAllowance` objects. */
 export type BranchActorAllowanceActor = App | Team | User;
 
@@ -35939,12 +35942,13 @@ export class TypedDocumentString<TResult, TVariables>
   implements DocumentTypeDecoration<TResult, TVariables>
 {
   __apiType?: DocumentTypeDecoration<TResult, TVariables>['__apiType'];
+  private value: string;
+  public __meta__?: Record<string, any> | undefined;
 
-  constructor(
-    private value: string,
-    public __meta__?: Record<string, any> | undefined,
-  ) {
+  constructor(value: string, __meta__?: Record<string, any> | undefined) {
     super(value);
+    this.value = value;
+    this.__meta__ = __meta__;
   }
 
   toString(): string & DocumentTypeDecoration<TResult, TVariables> {
