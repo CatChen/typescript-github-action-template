@@ -1291,6 +1291,8 @@ export type Bot = Actor & Node & UniformResourceLocatable & {
 export type BotAvatarUrlArgs = {
     size?: InputMaybe<Scalars['Int']['input']>;
 };
+/** Used when either Bot or User are accepted. */
+export type BotOrUser = Bot | User;
 /** Types which can be actors for `BranchActorAllowance` objects. */
 export type BranchActorAllowanceActor = App | Team | User;
 /** Parameters to be used for the branch_name_pattern rule */
