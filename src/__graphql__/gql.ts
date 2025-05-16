@@ -12,7 +12,10 @@ import * as types from './graphql.js';
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
-const documents = {
+type Documents = {
+  '\n  query ViewerLogin {\n    viewer {\n      login\n    }\n  }\n': typeof types.ViewerLoginDocument;
+};
+const documents: Documents = {
   '\n  query ViewerLogin {\n    viewer {\n      login\n    }\n  }\n':
     types.ViewerLoginDocument,
 };
