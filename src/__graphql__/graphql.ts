@@ -2428,6 +2428,8 @@ export type ClosedEvent = Node &
     closer?: Maybe<Closer>;
     /** Identifies the date and time when the object was created. */
     createdAt: Scalars['DateTime']['output'];
+    /** The issue or pull request that this issue was marked as a duplicate of. */
+    duplicateOf?: Maybe<IssueOrPullRequest>;
     /** The Node ID of the ClosedEvent object */
     id: Scalars['ID']['output'];
     /** The HTTP path for this closed event. */
@@ -9511,6 +9513,8 @@ export type Issue = Assignable &
     createdViaEmail: Scalars['Boolean']['output'];
     /** Identifies the primary key from the database. */
     databaseId?: Maybe<Scalars['Int']['output']>;
+    /** A reference to the original issue that this issue has been marked as a duplicate of. */
+    duplicateOf?: Maybe<Issue>;
     /** The actor who edited the comment. */
     editor?: Maybe<Actor>;
     /** Identifies the primary key from the database as a BigInt. */
