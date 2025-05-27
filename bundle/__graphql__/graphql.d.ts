@@ -9661,6 +9661,8 @@ export type LabelOrder = {
 export type LabelOrderField = 
 /** Order labels by creation time */
 'CREATED_AT'
+/** Order labels by issue count */
+ | 'ISSUE_COUNT'
 /** Order labels by name */
  | 'NAME';
 /** An object that can have labels assigned to it. */
@@ -21523,6 +21525,8 @@ export type ReleaseAsset = Node & {
     contentType: Scalars['String']['output'];
     /** Identifies the date and time when the object was created. */
     createdAt: Scalars['DateTime']['output'];
+    /** The SHA256 digest of the asset */
+    digest?: Maybe<Scalars['String']['output']>;
     /** The number of times this asset was downloaded */
     downloadCount: Scalars['Int']['output'];
     /** Identifies the URL where you can download the release asset via the browser. */
