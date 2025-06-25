@@ -10873,6 +10873,8 @@ export type Mannequin = Actor &
     id: Scalars['ID']['output'];
     /** The username of the actor. */
     login: Scalars['String']['output'];
+    /** The display name of the imported mannequin. */
+    name?: Maybe<Scalars['String']['output']>;
     /** The HTML path to this resource. */
     resourcePath: Scalars['URI']['output'];
     /** Identifies the date and time when the object was last updated. */
