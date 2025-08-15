@@ -1337,6 +1337,58 @@ export type Blob = GitObject &
     text?: Maybe<Scalars['String']['output']>;
   };
 
+/** Represents a 'blocked_by_added' event on a given issue. */
+export type BlockedByAddedEvent = Node & {
+  __typename: 'BlockedByAddedEvent';
+  /** Identifies the actor who performed the event. */
+  actor?: Maybe<Actor>;
+  /** The blocking issue that was added. */
+  blockingIssue?: Maybe<Issue>;
+  /** Identifies the date and time when the object was created. */
+  createdAt: Scalars['DateTime']['output'];
+  /** The Node ID of the BlockedByAddedEvent object */
+  id: Scalars['ID']['output'];
+};
+
+/** Represents a 'blocked_by_removed' event on a given issue. */
+export type BlockedByRemovedEvent = Node & {
+  __typename: 'BlockedByRemovedEvent';
+  /** Identifies the actor who performed the event. */
+  actor?: Maybe<Actor>;
+  /** The blocking issue that was removed. */
+  blockingIssue?: Maybe<Issue>;
+  /** Identifies the date and time when the object was created. */
+  createdAt: Scalars['DateTime']['output'];
+  /** The Node ID of the BlockedByRemovedEvent object */
+  id: Scalars['ID']['output'];
+};
+
+/** Represents a 'blocking_added' event on a given issue. */
+export type BlockingAddedEvent = Node & {
+  __typename: 'BlockingAddedEvent';
+  /** Identifies the actor who performed the event. */
+  actor?: Maybe<Actor>;
+  /** The blocked issue that was added. */
+  blockedIssue?: Maybe<Issue>;
+  /** Identifies the date and time when the object was created. */
+  createdAt: Scalars['DateTime']['output'];
+  /** The Node ID of the BlockingAddedEvent object */
+  id: Scalars['ID']['output'];
+};
+
+/** Represents a 'blocking_removed' event on a given issue. */
+export type BlockingRemovedEvent = Node & {
+  __typename: 'BlockingRemovedEvent';
+  /** Identifies the actor who performed the event. */
+  actor?: Maybe<Actor>;
+  /** The blocked issue that was removed. */
+  blockedIssue?: Maybe<Issue>;
+  /** Identifies the date and time when the object was created. */
+  createdAt: Scalars['DateTime']['output'];
+  /** The Node ID of the BlockingRemovedEvent object */
+  id: Scalars['ID']['output'];
+};
+
 /** A special type of user which takes actions on behalf of GitHub Apps. */
 export type Bot = Actor &
   Node &
@@ -10260,6 +10312,10 @@ export type IssueTimelineItemEdge = {
 export type IssueTimelineItems =
   | AddedToProjectEvent
   | AssignedEvent
+  | BlockedByAddedEvent
+  | BlockedByRemovedEvent
+  | BlockingAddedEvent
+  | BlockingRemovedEvent
   | ClosedEvent
   | CommentDeletedEvent
   | ConnectedEvent
@@ -22629,6 +22685,10 @@ export type PullRequestTimelineItems =
   | BaseRefChangedEvent
   | BaseRefDeletedEvent
   | BaseRefForcePushedEvent
+  | BlockedByAddedEvent
+  | BlockedByRemovedEvent
+  | BlockingAddedEvent
+  | BlockingRemovedEvent
   | ClosedEvent
   | CommentDeletedEvent
   | ConnectedEvent

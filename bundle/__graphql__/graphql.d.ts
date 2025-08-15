@@ -1286,6 +1286,54 @@ export type Blob = GitObject & Node & {
     /** UTF8 text data or null if the Blob is binary */
     text?: Maybe<Scalars['String']['output']>;
 };
+/** Represents a 'blocked_by_added' event on a given issue. */
+export type BlockedByAddedEvent = Node & {
+    __typename: 'BlockedByAddedEvent';
+    /** Identifies the actor who performed the event. */
+    actor?: Maybe<Actor>;
+    /** The blocking issue that was added. */
+    blockingIssue?: Maybe<Issue>;
+    /** Identifies the date and time when the object was created. */
+    createdAt: Scalars['DateTime']['output'];
+    /** The Node ID of the BlockedByAddedEvent object */
+    id: Scalars['ID']['output'];
+};
+/** Represents a 'blocked_by_removed' event on a given issue. */
+export type BlockedByRemovedEvent = Node & {
+    __typename: 'BlockedByRemovedEvent';
+    /** Identifies the actor who performed the event. */
+    actor?: Maybe<Actor>;
+    /** The blocking issue that was removed. */
+    blockingIssue?: Maybe<Issue>;
+    /** Identifies the date and time when the object was created. */
+    createdAt: Scalars['DateTime']['output'];
+    /** The Node ID of the BlockedByRemovedEvent object */
+    id: Scalars['ID']['output'];
+};
+/** Represents a 'blocking_added' event on a given issue. */
+export type BlockingAddedEvent = Node & {
+    __typename: 'BlockingAddedEvent';
+    /** Identifies the actor who performed the event. */
+    actor?: Maybe<Actor>;
+    /** The blocked issue that was added. */
+    blockedIssue?: Maybe<Issue>;
+    /** Identifies the date and time when the object was created. */
+    createdAt: Scalars['DateTime']['output'];
+    /** The Node ID of the BlockingAddedEvent object */
+    id: Scalars['ID']['output'];
+};
+/** Represents a 'blocking_removed' event on a given issue. */
+export type BlockingRemovedEvent = Node & {
+    __typename: 'BlockingRemovedEvent';
+    /** Identifies the actor who performed the event. */
+    actor?: Maybe<Actor>;
+    /** The blocked issue that was removed. */
+    blockedIssue?: Maybe<Issue>;
+    /** Identifies the date and time when the object was created. */
+    createdAt: Scalars['DateTime']['output'];
+    /** The Node ID of the BlockingRemovedEvent object */
+    id: Scalars['ID']['output'];
+};
 /** A special type of user which takes actions on behalf of GitHub Apps. */
 export type Bot = Actor & Node & UniformResourceLocatable & {
     __typename: 'Bot';
@@ -9435,7 +9483,7 @@ export type IssueTimelineItemEdge = {
     node?: Maybe<IssueTimelineItem>;
 };
 /** An item in an issue timeline */
-export type IssueTimelineItems = AddedToProjectEvent | AssignedEvent | ClosedEvent | CommentDeletedEvent | ConnectedEvent | ConvertedNoteToIssueEvent | ConvertedToDiscussionEvent | CrossReferencedEvent | DemilestonedEvent | DisconnectedEvent | IssueComment | IssueTypeAddedEvent | IssueTypeChangedEvent | IssueTypeRemovedEvent | LabeledEvent | LockedEvent | MarkedAsDuplicateEvent | MentionedEvent | MilestonedEvent | MovedColumnsInProjectEvent | ParentIssueAddedEvent | ParentIssueRemovedEvent | PinnedEvent | ReferencedEvent | RemovedFromProjectEvent | RenamedTitleEvent | ReopenedEvent | SubIssueAddedEvent | SubIssueRemovedEvent | SubscribedEvent | TransferredEvent | UnassignedEvent | UnlabeledEvent | UnlockedEvent | UnmarkedAsDuplicateEvent | UnpinnedEvent | UnsubscribedEvent | UserBlockedEvent;
+export type IssueTimelineItems = AddedToProjectEvent | AssignedEvent | BlockedByAddedEvent | BlockedByRemovedEvent | BlockingAddedEvent | BlockingRemovedEvent | ClosedEvent | CommentDeletedEvent | ConnectedEvent | ConvertedNoteToIssueEvent | ConvertedToDiscussionEvent | CrossReferencedEvent | DemilestonedEvent | DisconnectedEvent | IssueComment | IssueTypeAddedEvent | IssueTypeChangedEvent | IssueTypeRemovedEvent | LabeledEvent | LockedEvent | MarkedAsDuplicateEvent | MentionedEvent | MilestonedEvent | MovedColumnsInProjectEvent | ParentIssueAddedEvent | ParentIssueRemovedEvent | PinnedEvent | ReferencedEvent | RemovedFromProjectEvent | RenamedTitleEvent | ReopenedEvent | SubIssueAddedEvent | SubIssueRemovedEvent | SubscribedEvent | TransferredEvent | UnassignedEvent | UnlabeledEvent | UnlockedEvent | UnmarkedAsDuplicateEvent | UnpinnedEvent | UnsubscribedEvent | UserBlockedEvent;
 /** The connection type for IssueTimelineItems. */
 export type IssueTimelineItemsConnection = {
     __typename: 'IssueTimelineItemsConnection';
@@ -20714,7 +20762,7 @@ export type PullRequestTimelineItemEdge = {
     node?: Maybe<PullRequestTimelineItem>;
 };
 /** An item in a pull request timeline */
-export type PullRequestTimelineItems = AddedToMergeQueueEvent | AddedToProjectEvent | AssignedEvent | AutoMergeDisabledEvent | AutoMergeEnabledEvent | AutoRebaseEnabledEvent | AutoSquashEnabledEvent | AutomaticBaseChangeFailedEvent | AutomaticBaseChangeSucceededEvent | BaseRefChangedEvent | BaseRefDeletedEvent | BaseRefForcePushedEvent | ClosedEvent | CommentDeletedEvent | ConnectedEvent | ConvertToDraftEvent | ConvertedNoteToIssueEvent | ConvertedToDiscussionEvent | CrossReferencedEvent | DemilestonedEvent | DeployedEvent | DeploymentEnvironmentChangedEvent | DisconnectedEvent | HeadRefDeletedEvent | HeadRefForcePushedEvent | HeadRefRestoredEvent | IssueComment | IssueTypeAddedEvent | IssueTypeChangedEvent | IssueTypeRemovedEvent | LabeledEvent | LockedEvent | MarkedAsDuplicateEvent | MentionedEvent | MergedEvent | MilestonedEvent | MovedColumnsInProjectEvent | ParentIssueAddedEvent | ParentIssueRemovedEvent | PinnedEvent | PullRequestCommit | PullRequestCommitCommentThread | PullRequestReview | PullRequestReviewThread | PullRequestRevisionMarker | ReadyForReviewEvent | ReferencedEvent | RemovedFromMergeQueueEvent | RemovedFromProjectEvent | RenamedTitleEvent | ReopenedEvent | ReviewDismissedEvent | ReviewRequestRemovedEvent | ReviewRequestedEvent | SubIssueAddedEvent | SubIssueRemovedEvent | SubscribedEvent | TransferredEvent | UnassignedEvent | UnlabeledEvent | UnlockedEvent | UnmarkedAsDuplicateEvent | UnpinnedEvent | UnsubscribedEvent | UserBlockedEvent;
+export type PullRequestTimelineItems = AddedToMergeQueueEvent | AddedToProjectEvent | AssignedEvent | AutoMergeDisabledEvent | AutoMergeEnabledEvent | AutoRebaseEnabledEvent | AutoSquashEnabledEvent | AutomaticBaseChangeFailedEvent | AutomaticBaseChangeSucceededEvent | BaseRefChangedEvent | BaseRefDeletedEvent | BaseRefForcePushedEvent | BlockedByAddedEvent | BlockedByRemovedEvent | BlockingAddedEvent | BlockingRemovedEvent | ClosedEvent | CommentDeletedEvent | ConnectedEvent | ConvertToDraftEvent | ConvertedNoteToIssueEvent | ConvertedToDiscussionEvent | CrossReferencedEvent | DemilestonedEvent | DeployedEvent | DeploymentEnvironmentChangedEvent | DisconnectedEvent | HeadRefDeletedEvent | HeadRefForcePushedEvent | HeadRefRestoredEvent | IssueComment | IssueTypeAddedEvent | IssueTypeChangedEvent | IssueTypeRemovedEvent | LabeledEvent | LockedEvent | MarkedAsDuplicateEvent | MentionedEvent | MergedEvent | MilestonedEvent | MovedColumnsInProjectEvent | ParentIssueAddedEvent | ParentIssueRemovedEvent | PinnedEvent | PullRequestCommit | PullRequestCommitCommentThread | PullRequestReview | PullRequestReviewThread | PullRequestRevisionMarker | ReadyForReviewEvent | ReferencedEvent | RemovedFromMergeQueueEvent | RemovedFromProjectEvent | RenamedTitleEvent | ReopenedEvent | ReviewDismissedEvent | ReviewRequestRemovedEvent | ReviewRequestedEvent | SubIssueAddedEvent | SubIssueRemovedEvent | SubscribedEvent | TransferredEvent | UnassignedEvent | UnlabeledEvent | UnlockedEvent | UnmarkedAsDuplicateEvent | UnpinnedEvent | UnsubscribedEvent | UserBlockedEvent;
 /** The connection type for PullRequestTimelineItems. */
 export type PullRequestTimelineItemsConnection = {
     __typename: 'PullRequestTimelineItemsConnection';
