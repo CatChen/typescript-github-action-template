@@ -33195,7 +33195,7 @@ export type ViewerLoginQuery = {
     };
 };
 export declare class TypedDocumentString<TResult, TVariables> extends String implements DocumentTypeDecoration<TResult, TVariables> {
-    __apiType?: DocumentTypeDecoration<TResult, TVariables>['__apiType'];
+    __apiType?: NonNullable<DocumentTypeDecoration<TResult, TVariables>['__apiType']>;
     private value;
     __meta__?: Record<string, any> | undefined;
     constructor(value: string, __meta__?: Record<string, any> | undefined);
