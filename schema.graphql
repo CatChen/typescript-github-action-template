@@ -30407,6 +30407,62 @@ enum OrganizationOrderField {
 }
 
 """
+Parameters to be used for the organization_property condition
+"""
+type OrganizationPropertyConditionTarget {
+  """
+  Array of organization properties that must not match.
+  """
+  exclude: [OrganizationPropertyTargetDefinition!]!
+  """
+  Array of organization properties that must match
+  """
+  include: [OrganizationPropertyTargetDefinition!]!
+}
+
+"""
+Parameters to be used for the organization_property condition
+"""
+input OrganizationPropertyConditionTargetInput {
+  """
+  Array of organization properties that must not match.
+  """
+  exclude: [OrganizationPropertyTargetDefinitionInput!]!
+  """
+  Array of organization properties that must match
+  """
+  include: [OrganizationPropertyTargetDefinitionInput!]!
+}
+
+"""
+A property that must match
+"""
+type OrganizationPropertyTargetDefinition {
+  """
+  The name of the property
+  """
+  name: String!
+  """
+  The values to match for
+  """
+  propertyValues: [String!]!
+}
+
+"""
+A property that must match
+"""
+input OrganizationPropertyTargetDefinitionInput {
+  """
+  The name of the property
+  """
+  name: String!
+  """
+  The values to match for
+  """
+  propertyValues: [String!]!
+}
+
+"""
 An organization teams hovercard context
 """
 type OrganizationTeamsHovercardContext implements HovercardContext {
@@ -46381,6 +46437,10 @@ Set of conditions that determine if a ruleset will evaluate
 """
 type RepositoryRuleConditions {
   """
+  Configuration for the organization_property condition
+  """
+  organizationProperty: OrganizationPropertyConditionTarget
+  """
   Configuration for the ref_name condition
   """
   refName: RefNameConditionTarget
@@ -46402,6 +46462,10 @@ type RepositoryRuleConditions {
 Specifies the conditions required for a ruleset to evaluate
 """
 input RepositoryRuleConditionsInput {
+  """
+  Configuration for the organization_property condition
+  """
+  organizationProperty: OrganizationPropertyConditionTargetInput
   """
   Configuration for the ref_name condition
   """
@@ -47400,6 +47464,10 @@ enum RepositoryVulnerabilityAlertDependencyRelationship {
   A direct dependency of your project
   """
   DIRECT
+  """
+  The relationship could not be determined
+  """
+  INCONCLUSIVE
   """
   A transitive dependency of your project
   """
@@ -57854,7 +57922,9 @@ input UpdateProjectV2FieldInput {
       abstractType: "ProjectV2FieldConfiguration"
     )
   """
-  Configuration for an iteration field.
+  Configuration for a field of type ITERATION. Empty input is ignored, provided
+  values overwrite the existing configuration, and existing configuration should
+  be fetched for partial updates.
   """
   iterationConfiguration: ProjectV2IterationFieldConfigurationInput
   """
@@ -57862,9 +57932,9 @@ input UpdateProjectV2FieldInput {
   """
   name: String
   """
-  Options for a field of type SINGLE_SELECT. If empty, no changes will be made
-  to the options. If values are present, they will overwrite the existing
-  options for the field.
+  Options for a field of type SINGLE_SELECT. Empty input is ignored, provided
+  values overwrite existing options, and existing options should be fetched for
+  partial updates.
   """
   singleSelectOptions: [ProjectV2SingleSelectFieldOptionInput!]
 }
