@@ -813,6 +813,15 @@ export type AddedToProjectV2Event = Node & ProjectV2Event & {
     /** Did this event result from workflow automation? */
     wasAutomated: Scalars['Boolean']['output'];
 };
+/** Copilot Agentic fields in context of the current viewer. */
+export type Agentic = {
+    /** Channel value for subscribing to live updates for session creations. */
+    viewerCopilotAgentCreatesChannel?: Maybe<Scalars['String']['output']>;
+    /** Channel value for subscribing to live updates for session log updates. */
+    viewerCopilotAgentLogUpdatesChannel?: Maybe<Scalars['String']['output']>;
+    /** Channel value for subscribing to live updates for session updates. */
+    viewerCopilotAgentUpdatesChannel?: Maybe<Scalars['String']['output']>;
+};
 /** An announcement banner for an enterprise or organization. */
 export type AnnouncementBanner = {
     __typename: 'AnnouncementBanner';
@@ -20363,6 +20372,12 @@ export type PullRequestParameters = {
     requiredApprovingReviewCount: Scalars['Int']['output'];
     /** All conversations on code must be resolved before a pull request can be merged. */
     requiredReviewThreadResolution: Scalars['Boolean']['output'];
+    /**
+     * This field is in beta and subject to change. A collection of reviewers and
+     * associated file patterns. Each reviewer has a list of file patterns which
+     * determine the files that reviewer is required to review.
+     */
+    requiredReviewers?: Maybe<Array<RequiredReviewerConfiguration>>;
 };
 /** Require all commits be made to a non-target branch and submitted via a pull request before they can be merged. */
 export type PullRequestParametersInput = {
@@ -20383,6 +20398,12 @@ export type PullRequestParametersInput = {
     requiredApprovingReviewCount: Scalars['Int']['input'];
     /** All conversations on code must be resolved before a pull request can be merged. */
     requiredReviewThreadResolution: Scalars['Boolean']['input'];
+    /**
+     * This argument is in beta and subject to change. A collection of reviewers and
+     * associated file patterns. Each reviewer has a list of file patterns which
+     * determine the files that reviewer is required to review.
+     */
+    requiredReviewers?: InputMaybe<Array<RequiredReviewerConfigurationInput>>;
 };
 /** A review object for a given pull request. */
 export type PullRequestReview = Comment & Deletable & Minimizable & Node & Reactable & RepositoryNode & Updatable & UpdatableComment & {
@@ -26279,6 +26300,37 @@ export type RequiredDeploymentsParameters = {
 export type RequiredDeploymentsParametersInput = {
     /** The environments that must be successfully deployed to before branches can be merged. */
     requiredDeploymentEnvironments: Array<Scalars['String']['input']>;
+};
+/** A reviewing team, and file patterns describing which files they must approve changes to. */
+export type RequiredReviewerConfiguration = {
+    __typename: 'RequiredReviewerConfiguration';
+    /**
+     * Array of file patterns. Pull requests which change matching files must be
+     * approved by the specified team. File patterns use fnmatch syntax.
+     */
+    filePatterns: Array<Scalars['String']['output']>;
+    /**
+     * Minimum number of approvals required from the specified team. If set to zero,
+     * the team will be added to the pull request but approval is optional.
+     */
+    minimumApprovals: Scalars['Int']['output'];
+    /** Node ID of the team which must review changes to matching files. */
+    reviewerId: Scalars['ID']['output'];
+};
+/** A reviewing team, and file patterns describing which files they must approve changes to. */
+export type RequiredReviewerConfigurationInput = {
+    /**
+     * Array of file patterns. Pull requests which change matching files must be
+     * approved by the specified team. File patterns use fnmatch syntax.
+     */
+    filePatterns: Array<Scalars['String']['input']>;
+    /**
+     * Minimum number of approvals required from the specified team. If set to zero,
+     * the team will be added to the pull request but approval is optional.
+     */
+    minimumApprovals: Scalars['Int']['input'];
+    /** Node ID of the team which must review changes to matching files. */
+    reviewerId: Scalars['ID']['input'];
 };
 /** Represents a required status check for a protected branch, but not any specific run of that check. */
 export type RequiredStatusCheckDescription = {
@@ -32208,7 +32260,7 @@ export type UpdateUserListsForItemPayload = {
     user?: Maybe<User>;
 };
 /** A user is an individual's account on GitHub that owns repositories and can make new content. */
-export type User = Actor & Node & PackageOwner & ProfileOwner & ProjectOwner & ProjectV2Owner & ProjectV2Recent & RepositoryDiscussionAuthor & RepositoryDiscussionCommentAuthor & RepositoryOwner & Sponsorable & UniformResourceLocatable & {
+export type User = Actor & Agentic & Node & PackageOwner & ProfileOwner & ProjectOwner & ProjectV2Owner & ProjectV2Recent & RepositoryDiscussionAuthor & RepositoryDiscussionCommentAuthor & RepositoryOwner & Sponsorable & UniformResourceLocatable & {
     __typename: 'User';
     /** Determine if this repository owner has any items that can be pinned to their profile. */
     anyPinnableItems: Scalars['Boolean']['output'];
@@ -32411,6 +32463,12 @@ export type User = Actor & Node & PackageOwner & ProfileOwner & ProjectOwner & P
     viewerCanFollow: Scalars['Boolean']['output'];
     /** Whether or not the viewer is able to sponsor this user/organization. */
     viewerCanSponsor: Scalars['Boolean']['output'];
+    /** Channel value for subscribing to live updates for session creations. */
+    viewerCopilotAgentCreatesChannel?: Maybe<Scalars['String']['output']>;
+    /** Channel value for subscribing to live updates for session log updates. */
+    viewerCopilotAgentLogUpdatesChannel?: Maybe<Scalars['String']['output']>;
+    /** Channel value for subscribing to live updates for session updates. */
+    viewerCopilotAgentUpdatesChannel?: Maybe<Scalars['String']['output']>;
     /** Whether or not this user is followed by the viewer. Inverse of isFollowingViewer. */
     viewerIsFollowing: Scalars['Boolean']['output'];
     /** True if the viewer is sponsoring this user/organization. */
