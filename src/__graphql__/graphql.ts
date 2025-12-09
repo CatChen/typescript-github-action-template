@@ -3833,7 +3833,11 @@ export type ConvertedToDiscussionEvent = Node & {
   id: Scalars['ID']['output'];
 };
 
-/** Request Copilot code review for new pull requests automatically if the author has access to Copilot code review. */
+/**
+ * Request Copilot code review for new pull requests automatically if the author
+ * has access to Copilot code review and their premium requests quota has not
+ * reached the limit.
+ */
 export type CopilotCodeReviewParameters = {
   __typename: 'CopilotCodeReviewParameters';
   /** Copilot automatically reviews draft pull requests before they are marked as ready for review. */
@@ -3842,7 +3846,11 @@ export type CopilotCodeReviewParameters = {
   reviewOnPush: Scalars['Boolean']['output'];
 };
 
-/** Request Copilot code review for new pull requests automatically if the author has access to Copilot code review. */
+/**
+ * Request Copilot code review for new pull requests automatically if the author
+ * has access to Copilot code review and their premium requests quota has not
+ * reached the limit.
+ */
 export type CopilotCodeReviewParametersInput = {
   /** Copilot automatically reviews draft pull requests before they are marked as ready for review. */
   reviewDraftPullRequests?: InputMaybe<Scalars['Boolean']['input']>;
@@ -10496,6 +10504,12 @@ export type IssueTimelineItemsItemType =
   | 'DISCONNECTED_EVENT'
   /** Represents a comment on an Issue. */
   | 'ISSUE_COMMENT'
+  /** Represents a 'issue_field_added' event on a given issue. */
+  | 'ISSUE_FIELD_ADDED_EVENT'
+  /** Represents a 'issue_field_changed' event on a given issue. */
+  | 'ISSUE_FIELD_CHANGED_EVENT'
+  /** Represents a 'issue_field_removed' event on a given issue. */
+  | 'ISSUE_FIELD_REMOVED_EVENT'
   /** Represents a 'issue_type_added' event on a given issue. */
   | 'ISSUE_TYPE_ADDED_EVENT'
   /** Represents a 'issue_type_changed' event on a given issue. */
@@ -21744,6 +21758,8 @@ export type PullRequest = Assignable &
     statusCheckRollup?: Maybe<StatusCheckRollup>;
     /** A list of suggested actors to assign to this object */
     suggestedActors: AssigneeConnection;
+    /** Reviewer actor suggestions based on commit history, past review comments, and integrations. */
+    suggestedReviewerActors: SuggestedReviewerActorConnection;
     /** A list of reviewer suggestions based on commit history and past review comments. */
     suggestedReviewers: Array<Maybe<SuggestedReviewer>>;
     /**
@@ -21980,6 +21996,14 @@ export type PullRequestSuggestedActorsArgs = {
 };
 
 /** A repository pull request. */
+export type PullRequestSuggestedReviewerActorsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** A repository pull request. */
 export type PullRequestTimelineArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
@@ -22208,8 +22232,6 @@ export type PullRequestParameters = {
    * `rebase`. At least one option must be enabled.
    */
   allowedMergeMethods?: Maybe<Array<PullRequestAllowedMergeMethods>>;
-  /** Request Copilot code review for new pull requests automatically if the author has access to Copilot code review. */
-  automaticCopilotCodeReviewEnabled: Scalars['Boolean']['output'];
   /** New, reviewable commits pushed will dismiss previous pull request review approvals. */
   dismissStaleReviewsOnPush: Scalars['Boolean']['output'];
   /** Require an approving review in pull requests that modify files that have a designated code owner. */
@@ -22235,8 +22257,6 @@ export type PullRequestParametersInput = {
    * `rebase`. At least one option must be enabled.
    */
   allowedMergeMethods?: InputMaybe<Array<PullRequestAllowedMergeMethods>>;
-  /** Request Copilot code review for new pull requests automatically if the author has access to Copilot code review. */
-  automaticCopilotCodeReviewEnabled?: InputMaybe<Scalars['Boolean']['input']>;
   /** New, reviewable commits pushed will dismiss previous pull request review approvals. */
   dismissStaleReviewsOnPush: Scalars['Boolean']['input'];
   /** Require an approving review in pull requests that modify files that have a designated code owner. */
@@ -23011,6 +23031,12 @@ export type PullRequestTimelineItemsItemType =
   | 'HEAD_REF_RESTORED_EVENT'
   /** Represents a comment on an Issue. */
   | 'ISSUE_COMMENT'
+  /** Represents a 'issue_field_added' event on a given issue. */
+  | 'ISSUE_FIELD_ADDED_EVENT'
+  /** Represents a 'issue_field_changed' event on a given issue. */
+  | 'ISSUE_FIELD_CHANGED_EVENT'
+  /** Represents a 'issue_field_removed' event on a given issue. */
+  | 'ISSUE_FIELD_REMOVED_EVENT'
   /** Represents a 'issue_type_added' event on a given issue. */
   | 'ISSUE_TYPE_ADDED_EVENT'
   /** Represents a 'issue_type_changed' event on a given issue. */
@@ -24034,7 +24060,7 @@ export type ReleaseOrderField =
 export type RemoveAssigneesFromAssignableInput = {
   /** The id of the assignable object to remove assignees from. */
   assignableId: Scalars['ID']['input'];
-  /** The id of users to remove as assignees. */
+  /** The ids of actors to remove as assignees. */
   assigneeIds: Array<Scalars['ID']['input']>;
   /** A unique identifier for the client performing the mutation. */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
@@ -28010,7 +28036,11 @@ export type RepositoryRuleType =
   | 'COMMIT_AUTHOR_EMAIL_PATTERN'
   /** Commit message pattern */
   | 'COMMIT_MESSAGE_PATTERN'
-  /** Request Copilot code review for new pull requests automatically if the author has access to Copilot code review. */
+  /**
+   * Request Copilot code review for new pull requests automatically if the author
+   * has access to Copilot code review and their premium requests quota has not
+   * reached the limit.
+   */
   | 'COPILOT_CODE_REVIEW'
   /** Only allow users with bypass permission to create matching refs. */
   | 'CREATION'
@@ -31549,6 +31579,39 @@ export type SuggestedReviewer = {
   reviewer: User;
 };
 
+/** A suggestion to review a pull request based on an actor's commit history, review comments, and integrations. */
+export type SuggestedReviewerActor = {
+  __typename: 'SuggestedReviewerActor';
+  /** Is this suggestion based on past commits? */
+  isAuthor: Scalars['Boolean']['output'];
+  /** Is this suggestion based on past review comments? */
+  isCommenter: Scalars['Boolean']['output'];
+  /** Identifies the actor suggested to review the pull request. */
+  reviewer: Actor;
+};
+
+/** A suggestion to review a pull request based on an actor's commit history, review comments, and integrations. */
+export type SuggestedReviewerActorConnection = {
+  __typename: 'SuggestedReviewerActorConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<Maybe<SuggestedReviewerActorEdge>>>;
+  /** A list of nodes. */
+  nodes?: Maybe<Array<Maybe<SuggestedReviewerActor>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type SuggestedReviewerActorEdge = {
+  __typename: 'SuggestedReviewerActorEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<SuggestedReviewerActor>;
+};
+
 /** Represents a Git tag. */
 export type Tag = GitObject &
   Node & {
@@ -34251,7 +34314,7 @@ export type UpdateIssueCommentPayload = {
 
 /** Autogenerated input type of UpdateIssue */
 export type UpdateIssueInput = {
-  /** An array of Node IDs of users for this issue. */
+  /** An array of Node IDs of users or bots for this issue. */
   assigneeIds?: InputMaybe<Array<Scalars['ID']['input']>>;
   /** The body for the issue description. */
   body?: InputMaybe<Scalars['String']['input']>;
