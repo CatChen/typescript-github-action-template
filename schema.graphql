@@ -36328,6 +36328,10 @@ type PullRequest implements Assignable & Closable & Comment & Labelable & Lockab
     Returns the last _n_ elements from the list.
     """
     last: Int
+    """
+    Search actors with query on user name and login.
+    """
+    query: String
   ): SuggestedReviewerActorConnection!
   """
   A list of reviewer suggestions based on commit history and past review comments.
