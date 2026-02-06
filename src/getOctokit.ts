@@ -1,8 +1,8 @@
 import type { EndpointDefaults } from '@octokit/types';
-import { GitHub, getOctokitOptions } from '@actions/github/lib/utils';
+import { GitHub, getOctokitOptions } from '@actions/github/lib/utils.js';
 import { type Octokit } from '@octokit/core';
 import { type PaginateInterface } from '@octokit/plugin-paginate-rest';
-import { type Api } from '@octokit/plugin-rest-endpoint-methods';
+import { type Api } from '@octokit/plugin-rest-endpoint-methods/dist-types/types.js';
 import { retry } from '@octokit/plugin-retry';
 import { throttling } from '@octokit/plugin-throttling';
 
