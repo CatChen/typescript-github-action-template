@@ -125,7 +125,9 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version-file: '.nvmrc'
+          # Publish checks out a release tag from main, where .nvmrc may lag behind this branch.
+          # Pin Node here so trusted publishing always uses a compatible Node/npm runtime.
+          node-version: '24'
           check-latest: true
           registry-url: https://registry.npmjs.org/
           cache: yarn
