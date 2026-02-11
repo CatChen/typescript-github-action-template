@@ -2,7 +2,7 @@ name: Release
 # NPM publish uses OIDC (OpenID Connect) trusted publishing - no NPM_TOKEN required.
 # Configure the trusted publisher at https://www.npmjs.com (Package → Settings → Trusted publishing).
 # Set "Workflow filename" to release.yml on npmjs.com.
-# Requires Node 22.14+ and npm 11.5.1+ (see https://docs.npmjs.com/trusted-publishers).
+# The publish job uses Node 22 for OIDC support (requires Node 22.14+ and npm 11.5.1+).
 
 on:
   schedule:
@@ -125,7 +125,7 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version-file: '.nvmrc'
+          node-version: '22'
           check-latest: true
           registry-url: https://registry.npmjs.org/
           cache: yarn
