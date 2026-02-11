@@ -3,6 +3,7 @@ name: Release
 # Configure the trusted publisher at https://www.npmjs.com (Package → Settings → Trusted publishing).
 # Set "Workflow filename" to release.yml on npmjs.com.
 # The publish job uses Node 22 for OIDC support (requires Node 22.14+ and npm 11.5.1+).
+# npm is upgraded in the publish job to ensure trusted publishing requirements are met.
 
 on:
   schedule:
@@ -127,8 +128,12 @@ jobs:
         with:
           node-version: '22'
           check-latest: true
-          registry-url: https://registry.npmjs.org/
           cache: yarn
+
+      - name: Upgrade npm for trusted publishing
+        run: |
+          npm install -g npm@latest
+          npm --version
 
       - name: Build
         run: |
