@@ -2,7 +2,8 @@ name: Release
 # NPM publish uses OIDC (OpenID Connect) trusted publishing - no NPM_TOKEN required.
 # Configure the trusted publisher at https://www.npmjs.com (Package → Settings → Trusted publishing).
 # Set "Workflow filename" to release.yml on npmjs.com.
-# Requires Node 22.14+ and npm 11.5.1+ (see https://docs.npmjs.com/trusted-publishers).
+# The --provenance flag enables OIDC authentication and generates provenance attestations.
+# For npm 11.5.1+ with Node 22.14+, OIDC works automatically without --provenance.
 
 on:
   schedule:
@@ -145,8 +146,8 @@ jobs:
           echo "::group::npm publish"
           if [[ "$DRY_RUN" = true ]]
           then
-            npm publish --dry-run
+            npm publish --provenance --dry-run
           else
-            npm publish
+            npm publish --provenance
           fi
           echo "::endgroup::"
