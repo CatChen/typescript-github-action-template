@@ -37807,11 +37807,11 @@ const queryViewerLogin = graphql(`
       login
     }
   }
-`).toString();
+`);
 function getLogin(githubToken) {
     return src_awaiter(this, void 0, void 0, function* () {
         const octokit = getOctokit(githubToken);
-        const { viewer: { login }, } = (yield octokit.graphql(queryViewerLogin, {}));
+        const { viewer: { login }, } = yield octokit.graphql(queryViewerLogin.toString(), {});
         return login;
     });
 }

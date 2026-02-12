@@ -16,16 +16,16 @@ const queryViewerLogin = graphql(`
       login
     }
   }
-`).toString();
+`);
 
 export async function getLogin(githubToken: string): Promise<string> {
   const octokit = getOctokit(githubToken);
   const {
     viewer: { login },
-  } = (await octokit.graphql<{ viewer: { login: string } }>(
-    queryViewerLogin,
+  } = await octokit.graphql<ResultOf<typeof queryViewerLogin>>(
+    queryViewerLogin.toString(),
     {},
-  )) as ResultOf<typeof queryViewerLogin>;
+  );
   return login;
 }
 
