@@ -13,10 +13,10 @@ import * as types from './graphql.js';
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-  '\n  query ViewerLogin {\n    viewer {\n      login\n    }\n  }\n': typeof types.ViewerLoginDocument;
+  '\n  query ViewerLogin {\n    viewer {\n      id\n      login\n    }\n  }\n': typeof types.ViewerLoginDocument;
 };
 const documents: Documents = {
-  '\n  query ViewerLogin {\n    viewer {\n      login\n    }\n  }\n':
+  '\n  query ViewerLogin {\n    viewer {\n      id\n      login\n    }\n  }\n':
     types.ViewerLoginDocument,
 };
 
@@ -24,7 +24,7 @@ const documents: Documents = {
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query ViewerLogin {\n    viewer {\n      login\n    }\n  }\n',
+  source: '\n  query ViewerLogin {\n    viewer {\n      id\n      login\n    }\n  }\n',
 ): typeof import('./graphql.js').ViewerLoginDocument;
 
 export function graphql(source: string) {

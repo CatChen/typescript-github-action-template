@@ -33307,6 +33307,7 @@ export type ViewerLoginQuery = {
     __typename: 'Query';
     viewer: {
         __typename: 'User';
+        id: string;
         login: string;
     };
 };

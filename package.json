@@ -34,6 +34,7 @@
     "@graphql-codegen/near-operation-file-preset": "^4.0.0",
     "@graphql-codegen/typescript": "5.0.7",
     "@graphql-codegen/typescript-document-nodes": "5.0.7",
+    "@graphql-eslint/eslint-plugin": "^4.4.0",
     "@serverless-guru/prettier-plugin-import-order": "^0.4.2",
     "@types/node": "^25.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",

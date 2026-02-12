@@ -36304,7 +36304,7 @@ export type ViewerLoginQueryVariables = Exact<{ [key: string]: never }>;
 
 export type ViewerLoginQuery = {
   __typename: 'Query';
-  viewer: { __typename: 'User'; login: string };
+  viewer: { __typename: 'User'; id: string; login: string };
 };
 
 export class TypedDocumentString<TResult, TVariables>
@@ -36331,6 +36331,7 @@ export class TypedDocumentString<TResult, TVariables>
 export const ViewerLoginDocument = new TypedDocumentString(`
     query ViewerLogin {
   viewer {
+    id
     login
   }
 }
