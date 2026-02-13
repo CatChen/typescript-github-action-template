@@ -33358,6 +33358,7 @@ class TypedDocumentString extends String {
 const ViewerLoginDocument = new TypedDocumentString(`
     query ViewerLogin {
   viewer {
+    id
     login
   }
 }
@@ -33367,7 +33368,7 @@ const ViewerLoginDocument = new TypedDocumentString(`
 /* eslint-disable */
 
 const documents = {
-    '\n  query ViewerLogin {\n    viewer {\n      login\n    }\n  }\n': ViewerLoginDocument,
+    '\n  query ViewerLogin {\n    viewer {\n      id\n      login\n    }\n  }\n': ViewerLoginDocument,
 };
 function graphql(source) {
     var _a;
@@ -37804,6 +37805,7 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
 const queryViewerLogin = graphql(`
   query ViewerLogin {
     viewer {
+      id
       login
     }
   }

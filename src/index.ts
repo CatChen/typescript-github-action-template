@@ -13,6 +13,7 @@ import { getOctokit } from './getOctokit.js';
 const queryViewerLogin = graphql(`
   query ViewerLogin {
     viewer {
+      id
       login
     }
   }
