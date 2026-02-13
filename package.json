@@ -29,7 +29,7 @@
   "devDependencies": {
     "@0no-co/graphqlsp": "^1.12.12",
     "@eslint/eslintrc": "^3.0.2",
-    "@eslint/js": "^9.2.0",
+    "@eslint/js": "^10.0.1",
     "@graphql-codegen/cli": "6.1.1",
     "@graphql-codegen/near-operation-file-preset": "^4.0.0",
     "@graphql-codegen/typescript": "5.0.7",
@@ -40,7 +40,7 @@
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
     "@vercel/ncc": "^0.38.0",
-    "eslint": "^9.0.0",
+    "eslint": "^10.0.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.0.0",
     "graphql": "^16.9.0",
