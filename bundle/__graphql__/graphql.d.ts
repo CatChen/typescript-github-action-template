@@ -29295,9 +29295,15 @@ export type Team = MemberStatusable & Node & Subscribable & {
     url: Scalars['URI']['output'];
     /** Team is adminable by the viewer. */
     viewerCanAdminister: Scalars['Boolean']['output'];
-    /** Check if the viewer is able to change their subscription status for the repository. */
+    /**
+     * Check if the viewer is able to change their subscription status for the subscribable entity.
+     * @deprecated `Team.viewerCanSubscribe` will be removed. Team notifications subscriptions are being deprecated. Removal on 2026-07-01 UTC.
+     */
     viewerCanSubscribe: Scalars['Boolean']['output'];
-    /** Identifies if the viewer is watching, not watching, or ignoring the subscribable entity. */
+    /**
+     * Identifies if the viewer is watching, not watching, or ignoring the subscribable entity.
+     * @deprecated `Team.viewerSubscription` will be removed. Team notifications subscriptions are being deprecated. Removal on 2026-07-01 UTC.
+     */
     viewerSubscription?: Maybe<SubscriptionState>;
 };
 /** A team of users in an organization. */
