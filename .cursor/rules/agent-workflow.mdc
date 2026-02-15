@@ -1,0 +1,22 @@
+---
+description: Setup and validation commands required for this repository.
+alwaysApply: true
+---
+
+Follow `AGENTS.md` for repository-wide instructions.
+
+For every task in this repository:
+
+1. After setup, run:
+
+   ```bash
+   yarn
+   ```
+
+2. After making changes, run:
+
+   ```bash
+   yarn codegen && yarn lint --fix && yarn build && yarn bundle
+   ```
+
+3. If the command fails, fix issues and rerun until it succeeds.
