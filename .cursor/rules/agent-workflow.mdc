@@ -3,20 +3,24 @@ description: Setup and validation commands required for this repository.
 alwaysApply: true
 ---
 
-Follow `AGENTS.md` for repository-wide instructions.
+# Agent Instructions
 
-For every task in this repository:
+These instructions apply to all coding agents in this repository (Cursor, Claude Code, Codex).
 
-1. After setup, run:
+## Required setup command
 
-   ```bash
-   yarn
-   ```
+After opening or setting up the project, run:
 
-2. After making changes, run:
+```bash
+yarn
+```
 
-   ```bash
-   yarn codegen && yarn lint --fix && yarn build && yarn bundle
-   ```
+## Required validation command
 
-3. If the command fails, fix issues and rerun until it succeeds.
+After making changes, run:
+
+```bash
+yarn codegen && yarn lint --fix && yarn build && yarn bundle
+```
+
+Do not treat work as complete until the validation command succeeds. If it fails, fix the issues and run it again.

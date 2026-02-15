@@ -1,19 +1,21 @@
-# Claude Code Instructions
+# Agent Instructions
 
-Follow `AGENTS.md` as the source of truth for repository-wide agent workflow requirements.
+These instructions apply to all coding agents in this repository (Cursor, Claude Code, Codex).
 
-## Commands to always run
+## Required setup command
 
-1. After project setup:
+After opening or setting up the project, run:
 
-   ```bash
-   yarn
-   ```
+```bash
+yarn
+```
 
-2. After making code changes:
+## Required validation command
 
-   ```bash
-   yarn codegen && yarn lint --fix && yarn build && yarn bundle
-   ```
+After making changes, run:
 
-Do not finish a task until the post-change command completes successfully.
+```bash
+yarn codegen && yarn lint --fix && yarn build && yarn bundle
+```
+
+Do not treat work as complete until the validation command succeeds. If it fails, fix the issues and run it again.
