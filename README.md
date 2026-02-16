@@ -12,15 +12,16 @@ The following secrets need to be set up before you can use workflows already def
 
 ## GraphQL schema drift automation
 
-The [`GraphQL Schema Drift` workflow](https://github.com/CatChen/typescript-github-action-template/blob/main/.github/workflows/graphql-schema-drift.yml) automatically detects upstream GitHub GraphQL schema changes and refreshes generated artifacts.
+The [`GraphQL Schema` workflow](https://github.com/CatChen/typescript-github-action-template/blob/main/.github/workflows/graphql-schema.yml) automatically detects upstream GitHub GraphQL schema changes and refreshes generated artifacts.
 
-- **Triggers**: Daily schedule and manual `workflow_dispatch`.
+- **Triggers**: Weekly schedule (same cron as `Release`) and manual `workflow_dispatch`.
 - **Regeneration command**: `yarn codegen`.
 - **Generated artifacts**: `schema.graphql` and `src/__graphql__/**`.
-- **Duplicate PR guardrails**: Uses a fixed branch (`automation/graphql-schema-drift`) so drift updates are applied to a single rolling PR instead of creating duplicates.
-- **CI checks on generated PRs**: Uses the same bot app token as `Build` (`CHECK_GIT_STATUS_BOT_APP_ID` / `CHECK_GIT_STATUS_BOT_APP_PRIVATE_KEY`) so pull request workflows run on automation-created updates.
+- **Diff detection**: Uses [`CatChen/check-git-status-action`](https://github.com/marketplace/actions/check-git-status) after `yarn codegen` and only proceeds when status is `dirty`.
+- **Duplicate PR guardrails**: Uses a fixed branch (`workflows/graphql-schema`) so drift updates are applied to a single rolling PR instead of creating duplicates.
+- **PR automation**: Uses `gh pr create` / `gh pr edit` with the built-in `github.token`, assigns and requests review from `CatChen`, and adds the `pass2ship` label.
 
 To monitor automation health, check:
 
-1. The workflow run history for `GraphQL Schema Drift` under the Actions tab.
-2. The open PR from branch `automation/graphql-schema-drift` (if drift is currently pending merge).
+1. The workflow run history for `GraphQL Schema` under the Actions tab.
+2. The open PR from branch `workflows/graphql-schema` (if drift is currently pending merge).

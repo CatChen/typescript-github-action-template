@@ -1,0 +1,130 @@
+name: GraphQL Schema
+
+on:
+  schedule:
+    - cron: '0 12 * * 0'
+  workflow_dispatch:
+
+concurrency:
+  group: graphql-schema
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    name: Detect schema drift and refresh codegen
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+          check-latest: true
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Regenerate GraphQL schema and types
+        run: yarn codegen
+
+      - uses: CatChen/check-git-status-action@v1
+        id: check-git-status
+        with:
+          fail-if-not-clean: false
+          push-if-not-clean: false
+          request-changes-if-not-clean: false
+          targets: .
+
+      - name: No GraphQL schema drift detected
+        if: ${{ steps.check-git-status.outputs.status == 'clean' }}
+        run: echo "::notice::No GraphQL schema drift detected."
+
+      - name: Commit and push schema refresh branch
+        if: ${{ steps.check-git-status.outputs.status == 'dirty' }}
+        id: push-branch
+        env:
+          BRANCH_NAME: workflows/graphql-schema
+        run: |
+          git checkout -B "$BRANCH_NAME"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add schema.graphql src/__graphql__
+
+          if git diff --cached --quiet
+          then
+            echo "::notice::No schema-related diff to commit."
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          {
+            echo "changed_files<<EOF"
+            git diff --cached --name-only | sed 's/^/- `/' | sed 's/$/`/'
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+          git commit -m "chore(graphql): refresh GitHub schema and generated types"
+
+          if [ -n "$(git ls-remote --heads origin "$BRANCH_NAME")" ]
+          then
+            echo "::notice::Updating existing remote branch $BRANCH_NAME."
+          else
+            echo "::notice::Creating remote branch $BRANCH_NAME."
+          fi
+
+          git push --force-with-lease origin "HEAD:refs/heads/$BRANCH_NAME"
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Create or update schema refresh pull request
+        if: ${{ steps.push-branch.outputs.pushed == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH_NAME: workflows/graphql-schema
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
+          PR_TITLE: 'chore(graphql): refresh GitHub schema and generated types'
+          PR_BODY_CHANGED_FILES: ${{ steps.push-branch.outputs.changed_files }}
+        run: |
+          PR_BODY_FILE="$(mktemp)"
+          {
+            echo "## Summary"
+            echo "Automated refresh after detecting upstream GitHub GraphQL schema drift."
+            echo
+            echo "### Regeneration command"
+            echo '```bash'
+            echo "yarn codegen"
+            echo '```'
+            echo
+            echo "### Updated artifacts"
+            echo "$PR_BODY_CHANGED_FILES"
+            echo
+            echo "This PR is maintained by the \`GraphQL Schema\` workflow."
+          } > "$PR_BODY_FILE"
+
+          HEAD_REF="$REPOSITORY_OWNER:$BRANCH_NAME"
+          PR_NUMBER="$(gh pr list --base main --head "$HEAD_REF" --state open --json number --jq '.[0].number')"
+
+          if [ -n "$PR_NUMBER" ]
+          then
+            gh pr edit "$PR_NUMBER" --title "$PR_TITLE" --body-file "$PR_BODY_FILE"
+            gh pr edit "$PR_NUMBER" --add-assignee CatChen || true
+            gh pr edit "$PR_NUMBER" --add-reviewer CatChen || true
+            gh pr edit "$PR_NUMBER" --add-label pass2ship || true
+            echo "::notice::Updated pull request #$PR_NUMBER."
+          else
+            gh pr create \
+              --base main \
+              --head "$HEAD_REF" \
+              --title "$PR_TITLE" \
+              --body-file "$PR_BODY_FILE" \
+              --assignee CatChen \
+              --reviewer CatChen \
+              --label pass2ship
+            echo "::notice::Created pull request from $BRANCH_NAME to main."
+          fi
