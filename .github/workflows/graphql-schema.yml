@@ -42,9 +42,10 @@ jobs:
           request-changes-if-not-clean: false
           targets: .
 
-      - name: No GraphQL schema drift detected
-        if: ${{ steps.check-git-status.outputs.status == 'clean' }}
-        run: echo "::notice::No GraphQL schema drift detected."
+      - uses: CatChen/config-git-with-token-action@v2
+        if: ${{ steps.check-git-status.outputs.status == 'dirty' }}
+        with:
+          github-token: ${{ github.token }}
 
       - name: Commit and push schema refresh branch
         if: ${{ steps.check-git-status.outputs.status == 'dirty' }}
@@ -53,16 +54,7 @@ jobs:
           BRANCH_NAME: workflows/graphql-schema
         run: |
           git checkout -B "$BRANCH_NAME"
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add schema.graphql src/__graphql__
-
-          if git diff --cached --quiet
-          then
-            echo "::notice::No schema-related diff to commit."
-            echo "pushed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
 
           {
             echo "changed_files<<EOF"
@@ -70,24 +62,14 @@ jobs:
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
-          git commit -m "chore(graphql): refresh GitHub schema and generated types"
-
-          if [ -n "$(git ls-remote --heads origin "$BRANCH_NAME")" ]
-          then
-            echo "::notice::Updating existing remote branch $BRANCH_NAME."
-          else
-            echo "::notice::Creating remote branch $BRANCH_NAME."
-          fi
-
+          git commit -m "Updated GitHub GraphQL schema"
           git push --force-with-lease origin "HEAD:refs/heads/$BRANCH_NAME"
-          echo "pushed=true" >> "$GITHUB_OUTPUT"
 
       - name: Create or update schema refresh pull request
-        if: ${{ steps.push-branch.outputs.pushed == 'true' }}
+        if: ${{ steps.check-git-status.outputs.status == 'dirty' }}
         env:
           GH_TOKEN: ${{ github.token }}
           BRANCH_NAME: workflows/graphql-schema
-          REPOSITORY_OWNER: ${{ github.repository_owner }}
           PR_TITLE: 'chore(graphql): refresh GitHub schema and generated types'
           PR_BODY_CHANGED_FILES: ${{ steps.push-branch.outputs.changed_files }}
         run: |
@@ -107,24 +89,15 @@ jobs:
             echo "This PR is maintained by the \`GraphQL Schema\` workflow."
           } > "$PR_BODY_FILE"
 
-          HEAD_REF="$REPOSITORY_OWNER:$BRANCH_NAME"
-          PR_NUMBER="$(gh pr list --base main --head "$HEAD_REF" --state open --json number --jq '.[0].number')"
-
-          if [ -n "$PR_NUMBER" ]
+          PR_NUMBER="$(gh pr list --base main --head "$BRANCH_NAME" --state open --json number --jq '.[0].number')"
+          if [ -z "$PR_NUMBER" ]
           then
-            gh pr edit "$PR_NUMBER" --title "$PR_TITLE" --body-file "$PR_BODY_FILE"
-            gh pr edit "$PR_NUMBER" --add-assignee CatChen || true
-            gh pr edit "$PR_NUMBER" --add-reviewer CatChen || true
-            gh pr edit "$PR_NUMBER" --add-label pass2ship || true
-            echo "::notice::Updated pull request #$PR_NUMBER."
-          else
             gh pr create \
               --base main \
-              --head "$HEAD_REF" \
+              --head "$BRANCH_NAME" \
               --title "$PR_TITLE" \
               --body-file "$PR_BODY_FILE" \
               --assignee CatChen \
               --reviewer CatChen \
               --label pass2ship
-            echo "::notice::Created pull request from $BRANCH_NAME to main."
           fi
