@@ -35,12 +35,33 @@ jobs:
         run: yarn codegen
 
       - uses: CatChen/check-git-status-action@v1
-        id: check-git-status
+        id: check-schema-status
         with:
           fail-if-not-clean: false
           push-if-not-clean: false
           request-changes-if-not-clean: false
-          targets: .
+          targets: schema.graphql
+
+      - uses: CatChen/check-git-status-action@v1
+        id: check-generated-types-status
+        with:
+          fail-if-not-clean: false
+          push-if-not-clean: false
+          request-changes-if-not-clean: false
+          targets: src/__graphql__
+
+      - name: Combine schema drift status
+        id: check-git-status
+        env:
+          SCHEMA_STATUS: ${{ steps.check-schema-status.outputs.status }}
+          GENERATED_TYPES_STATUS: ${{ steps.check-generated-types-status.outputs.status }}
+        run: |
+          if [ "$SCHEMA_STATUS" = "dirty" ] || [ "$GENERATED_TYPES_STATUS" = "dirty" ]
+          then
+            echo "status=dirty" >> "$GITHUB_OUTPUT"
+          else
+            echo "status=clean" >> "$GITHUB_OUTPUT"
+          fi
 
       - uses: CatChen/config-git-with-token-action@v2
         if: ${{ steps.check-git-status.outputs.status == 'dirty' }}
