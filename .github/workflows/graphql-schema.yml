@@ -10,8 +10,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  refresh:
-    name: Detect schema drift and refresh codegen
+  graphql-schema:
+    name: GraphQL Schema
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -31,7 +31,7 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Regenerate GraphQL schema and types
+      - name: Generate GraphQL schema and types
         run: yarn codegen
 
       - uses: CatChen/check-git-status-action@v1
@@ -47,56 +47,30 @@ jobs:
         with:
           github-token: ${{ github.token }}
 
-      - name: Commit and push schema refresh branch
+      - name: Commit and push schema
         if: ${{ steps.check-git-status.outputs.status == 'dirty' }}
-        id: push-branch
         env:
           BRANCH_NAME: workflows/graphql-schema
         run: |
           git checkout -B "$BRANCH_NAME"
           git add schema.graphql src/__graphql__
 
-          {
-            echo "changed_files<<EOF"
-            git diff --cached --name-only | sed 's/^/- `/' | sed 's/$/`/'
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
-
           git commit -m "Updated GitHub GraphQL schema"
           git push --force-with-lease origin "HEAD:refs/heads/$BRANCH_NAME"
 
-      - name: Create or update schema refresh pull request
+      - name: Create PR
         if: ${{ steps.check-git-status.outputs.status == 'dirty' }}
         env:
           GH_TOKEN: ${{ github.token }}
           BRANCH_NAME: workflows/graphql-schema
-          PR_TITLE: 'chore(graphql): refresh GitHub schema and generated types'
-          PR_BODY_CHANGED_FILES: ${{ steps.push-branch.outputs.changed_files }}
         run: |
-          PR_BODY_FILE="$(mktemp)"
-          {
-            echo "## Summary"
-            echo "Automated refresh after detecting upstream GitHub GraphQL schema drift."
-            echo
-            echo "### Regeneration command"
-            echo '```bash'
-            echo "yarn codegen"
-            echo '```'
-            echo
-            echo "### Updated artifacts"
-            echo "$PR_BODY_CHANGED_FILES"
-            echo
-            echo "This PR is maintained by the \`GraphQL Schema\` workflow."
-          } > "$PR_BODY_FILE"
-
           PR_NUMBER="$(gh pr list --base main --head "$BRANCH_NAME" --state open --json number --jq '.[0].number')"
           if [ -z "$PR_NUMBER" ]
           then
             gh pr create \
               --base main \
               --head "$BRANCH_NAME" \
-              --title "$PR_TITLE" \
-              --body-file "$PR_BODY_FILE" \
+              --title "Synchronized GitHub GraphQL schema" \
               --assignee CatChen \
               --reviewer CatChen \
               --label pass2ship
