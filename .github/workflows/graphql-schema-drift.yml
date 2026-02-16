@@ -84,4 +84,4 @@ jobs:
             This PR is maintained by the `GraphQL Schema Drift` workflow.
           add-paths: |
             schema.graphql
-            src/__graphql__/**
+            src/__graphql__
