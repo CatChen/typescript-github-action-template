@@ -41,7 +41,7 @@ jobs:
       - name: Generate GraphQL schema and types
         run: yarn codegen
 
-      - uses: CatChen/check-git-status-action@v1
+      - uses: CatChen/check-git-status-action@v2
         id: check-git-status
         with:
           fail-if-not-clean: false
