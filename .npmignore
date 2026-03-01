@@ -14,3 +14,6 @@ eslint.config.js
 tsconfig.json
 codegen.ts
 schema.graphql
+.cursor/
+AGENTS.md
+CLAUDE.md
