@@ -38,7 +38,7 @@ on:
 
 jobs:
   debug_information:
-    name: Debug Information (${{ github.event_name }})
+    name: Debug Information (${{ github.event_name }} - ${{ github.event.action }})
     runs-on: ubuntu-latest
 
     steps:
