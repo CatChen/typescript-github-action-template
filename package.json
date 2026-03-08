@@ -1,6 +1,6 @@
 {
   "name": "typescript-github-action-template",
-  "version": "0.2.53",
+  "version": "0.2.54",
   "description": "A template to create custom GitHub Action with TypeScript/JavaScript.",
   "packageManager": "yarn@4.13.0",
   "main": "dist/index.js",
