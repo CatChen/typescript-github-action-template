@@ -44,17 +44,6 @@ jobs:
       - name: Generate GraphQL schema and types
         run: yarn codegen
 
-      - name: Reformat
-        run: |
-          yarn prettier --write .
-          yarn lint --fix || true
-
-      - name: Build
-        run: yarn build
-
-      - name: Bundle
-        run: yarn bundle
-
       - uses: CatChen/check-git-status-action@v2
         id: check-git-status
         with:
@@ -62,6 +51,20 @@ jobs:
           push-if-not-clean: false
           request-changes-if-not-clean: false
           targets: .
+
+      - name: Reformat
+        if: ${{ steps.check-git-status.outputs.status == 'dirty' }}
+        run: |
+          yarn prettier --write .
+          yarn lint --fix || true
+
+      - name: Build
+        if: ${{ steps.check-git-status.outputs.status == 'dirty' }}
+        run: yarn build
+
+      - name: Bundle
+        if: ${{ steps.check-git-status.outputs.status == 'dirty' }}
+        run: yarn bundle
 
       - uses: CatChen/config-git-with-token-action@v2
         if: ${{ steps.check-git-status.outputs.status == 'dirty' }}
