@@ -29,11 +29,33 @@ gh pr checks <PR_NUMBER> --repo <OWNER/REPO>
 gh run view <RUN_ID> --log-failed
 ```
 
-**Review comments**: When the user mentions comments, fetch unresolved review comments from the PR and focus on those:
-
+**Review comments**: When the user mentions comments, use GraphQL to fetch unresolved review threads (the REST API does not expose resolution state):
 ```bash
-gh pr view <PR_NUMBER> --repo <OWNER/REPO> --comments
-gh api repos/<OWNER/REPO>/pulls/<PR_NUMBER>/comments
+gh api graphql \
+  -F owner=<OWNER> -F repo=<REPO> -F number=<PR_NUMBER> \
+  -f query='
+    query($owner: String!, $repo: String!, $number: Int!) {
+      repository(owner: $owner, name: $repo) {
+        pullRequest(number: $number) {
+          reviewThreads(first: 100) {
+            nodes {
+              isResolved
+              isOutdated
+              path
+              line
+              comments(first: 50) {
+                nodes {
+                  body
+                  author { login }
+                  createdAt
+                  url
+                }
+              }
+            }
+          }
+        }
+      }
+    }' \
+  | jq '.data.repository.pullRequest.reviewThreads.nodes | map(select(.isResolved == false))'
 ```
-
-Filter for unresolved threads — these are comments without a reply that resolves them, or where `in_reply_to_id` is absent and no subsequent reply marks the thread resolved.
+Focus on threads where `isResolved` is `false`. Ignore `isOutdated` threads unless specifically relevant.
