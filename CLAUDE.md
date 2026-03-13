@@ -30,6 +30,7 @@ gh run view <RUN_ID> --log-failed
 ```
 
 **Review comments**: When the user mentions comments, use GraphQL to fetch unresolved review threads (the REST API does not expose resolution state):
+
 ```bash
 gh api graphql \
   -F owner=<OWNER> -F repo=<REPO> -F number=<PR_NUMBER> \
@@ -58,4 +59,5 @@ gh api graphql \
     }' \
   | jq '.data.repository.pullRequest.reviewThreads.nodes | map(select(.isResolved == false))'
 ```
+
 Focus on threads where `isResolved` is `false`. Ignore `isOutdated` threads unless specifically relevant.
