@@ -15,7 +15,18 @@ yarn
 After making changes, run:
 
 ```bash
-yarn codegen && yarn lint --fix && yarn build && yarn bundle
+yarn codegen && yarn format && yarn lint --fix && yarn build && yarn bundle
 ```
 
 Do not treat work as complete until the validation command succeeds. If it fails, fix the issues and run it again.
+
+## Pull Request issues
+
+**Failed tests**: When the user mentions failed tests, fetch the PR's failed checks and inspect the relevant workflow runs. The `detailsUrl` field contains the run ID in the format `.../actions/runs/<RUN_ID>/jobs/...`:
+
+```bash
+gh pr checks <PR_NUMBER> --repo <OWNER/REPO> --json name,status,detailsUrl
+gh run view <RUN_ID> --repo <OWNER/REPO> --log-failed
+```
+
+**Review comments**: When the user mentions comments, use `gh api graphql` to query `pullRequest.reviewThreads` and focus on threads where `isResolved` is `false`. The REST API does not expose resolution state — GraphQL `PullRequestReviewThread.isResolved` is required.
