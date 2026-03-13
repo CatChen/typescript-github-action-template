@@ -20,7 +20,7 @@ yarn codegen && yarn format && yarn lint --fix && yarn build && yarn bundle
 
 Do not treat work as complete until the validation command succeeds. If it fails, fix the issues and run it again.
 
-## PR debugging
+## Pull Request issues
 
 **Failed tests**: When the user mentions failed tests, fetch the PR's failed checks and inspect the relevant workflow runs:
 
