@@ -15,7 +15,7 @@ yarn
 After making changes, run:
 
 ```bash
-yarn codegen && yarn lint --fix && yarn build && yarn bundle
+yarn codegen && yarn format && yarn lint --fix && yarn build && yarn bundle
 ```
 
 Do not treat work as complete until the validation command succeeds. If it fails, fix the issues and run it again.
@@ -29,35 +29,4 @@ gh pr checks <PR_NUMBER> --repo <OWNER/REPO>
 gh run view <RUN_ID> --log-failed
 ```
 
-**Review comments**: When the user mentions comments, use GraphQL to fetch unresolved review threads (the REST API does not expose resolution state):
-
-```bash
-gh api graphql \
-  -F owner=<OWNER> -F repo=<REPO> -F number=<PR_NUMBER> \
-  -f query='
-    query($owner: String!, $repo: String!, $number: Int!) {
-      repository(owner: $owner, name: $repo) {
-        pullRequest(number: $number) {
-          reviewThreads(first: 100) {
-            nodes {
-              isResolved
-              isOutdated
-              path
-              line
-              comments(first: 50) {
-                nodes {
-                  body
-                  author { login }
-                  createdAt
-                  url
-                }
-              }
-            }
-          }
-        }
-      }
-    }' \
-  | jq '.data.repository.pullRequest.reviewThreads.nodes | map(select(.isResolved == false))'
-```
-
-Focus on threads where `isResolved` is `false`. Ignore `isOutdated` threads unless specifically relevant.
+**Review comments**: When the user mentions comments, use `gh api graphql` to query `pullRequest.reviewThreads` and focus on threads where `isResolved` is `false`. The REST API does not expose resolution state — GraphQL `PullRequestReviewThread.isResolved` is required.
