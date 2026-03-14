@@ -25,7 +25,7 @@ Do not treat work as complete until the validation command succeeds. If it fails
 **Failed tests**: When the user mentions failed tests, fetch the PR's failed checks and inspect the relevant workflow runs. The `detailsUrl` field contains the run ID in the format `.../actions/runs/<RUN_ID>/jobs/...`:
 
 ```bash
-gh pr checks <PR_NUMBER> --repo <OWNER/REPO> --json name,status,detailsUrl
+gh pr checks <PR_NUMBER> --repo <OWNER/REPO> --json name,status,conclusion,detailsUrl
 gh run view <RUN_ID> --repo <OWNER/REPO> --log-failed
 ```
 
