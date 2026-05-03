@@ -1,6 +1,6 @@
 {
   "name": "typescript-github-action-template",
-  "version": "0.2.60",
+  "version": "0.2.61",
   "description": "A template to create custom GitHub Action with TypeScript/JavaScript.",
   "license": "MIT",
   "repository": {
