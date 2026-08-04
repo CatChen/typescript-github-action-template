@@ -2676,7 +2676,7 @@ const MockAgent = __nccwpck_require__(7501)
 const MockPool = __nccwpck_require__(4004)
 const mockErrors = __nccwpck_require__(2429)
 const RetryHandler = __nccwpck_require__(7816)
-const { getGlobalDispatcher, setGlobalDispatcher } = __nccwpck_require__(2581)
+const { getGlobalDispatcher, setGlobalDispatcher } = __nccwpck_require__(4962)
 const DecoratorHandler = __nccwpck_require__(8155)
 const RedirectHandler = __nccwpck_require__(8754)
 const createRedirectInterceptor = __nccwpck_require__(5092)
@@ -11194,7 +11194,7 @@ module.exports = RetryAgent
 
 /***/ }),
 
-/***/ 2581:
+/***/ 4962:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 
@@ -20290,7 +20290,7 @@ const EE = __nccwpck_require__(8474)
 const { Readable, pipeline, finished } = __nccwpck_require__(7075)
 const { addAbortListener, isErrored, isReadable, bufferToLowerCasedHeaderName } = __nccwpck_require__(3440)
 const { dataURLProcessor, serializeAMimeType, minimizeSupportedMimeType } = __nccwpck_require__(1900)
-const { getGlobalDispatcher } = __nccwpck_require__(2581)
+const { getGlobalDispatcher } = __nccwpck_require__(4962)
 const { webidl } = __nccwpck_require__(5893)
 const { STATUS_CODES } = __nccwpck_require__(7067)
 const GET_OR_HEAD = ['GET', 'HEAD']
@@ -29673,7 +29673,7 @@ const {
 const { establishWebSocketConnection, closeWebSocketConnection } = __nccwpck_require__(6897)
 const { ByteParser } = __nccwpck_require__(1652)
 const { kEnumerableProperty, isBlobLike } = __nccwpck_require__(3440)
-const { getGlobalDispatcher } = __nccwpck_require__(2581)
+const { getGlobalDispatcher } = __nccwpck_require__(4962)
 const { types } = __nccwpck_require__(7975)
 const { ErrorEvent, CloseEvent } = __nccwpck_require__(5188)
 const { SendQueue } = __nccwpck_require__(3900)
@@ -37743,6 +37743,47 @@ function getOctokitOptions(token, options) {
 //# sourceMappingURL=utils.js.map
 // EXTERNAL MODULE: ./node_modules/bottleneck/light.js
 var light = __nccwpck_require__(3251);
+;// CONCATENATED MODULE: ./node_modules/@octokit/plugin-retry/node_modules/@octokit/request-error/dist-src/index.js
+class dist_src_RequestError extends Error {
+  name;
+  /**
+   * http status code
+   */
+  status;
+  /**
+   * Request options that lead to the error.
+   */
+  request;
+  /**
+   * Response object if a response was received
+   */
+  response;
+  constructor(message, statusCode, options) {
+    super(message, { cause: options.cause });
+    this.name = "HttpError";
+    this.status = Number.parseInt(statusCode);
+    if (Number.isNaN(this.status)) {
+      this.status = 0;
+    }
+    /* v8 ignore else -- @preserve -- Bug with vitest coverage where it sees an else branch that doesn't exist */
+    if ("response" in options) {
+      this.response = options.response;
+    }
+    const requestCopy = Object.assign({}, options.request);
+    if (options.request.headers.authorization) {
+      requestCopy.headers = Object.assign({}, options.request.headers, {
+        authorization: options.request.headers.authorization.replace(
+          /(?<! ) .*$/,
+          " [REDACTED]"
+        )
+      });
+    }
+    requestCopy.url = requestCopy.url.replace(/\bclient_secret=\w+/g, "client_secret=[REDACTED]").replace(/\baccess_token=\w+/g, "access_token=[REDACTED]");
+    this.request = requestCopy;
+  }
+}
+
+
 ;// CONCATENATED MODULE: ./node_modules/@octokit/plugin-retry/dist-bundle/index.js
 // pkg/dist-src/version.js
 var plugin_retry_dist_bundle_VERSION = "0.0.0-development";
@@ -37786,7 +37827,7 @@ async function requestWithGraphqlErrorHandling(state, octokit, request, options)
   if (response.data && response.data.errors && response.data.errors.length > 0 && /Something went wrong while executing your query/.test(
     response.data.errors[0].message
   )) {
-    const error = new RequestError(response.data.errors[0].message, 500, {
+    const error = new dist_src_RequestError(response.data.errors[0].message, 500, {
       request: options,
       response
     });
