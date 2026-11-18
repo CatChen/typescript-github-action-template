@@ -10,6 +10,9 @@ const config: CodegenConfig = {
     './src/__graphql__/': {
       preset: 'client',
       config: {
+        // NodeNext resolves ESM imports exactly as Node does, so generated
+        // TypeScript must point at the JavaScript files that tsc will emit.
+        importExtension: '.js',
         useTypeImports: true,
         enumsAsTypes: true,
         dedupeFragments: true,
